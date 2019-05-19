@@ -1,2 +1,3 @@
-# simple-bars
-Takes CSV input and generates semantic HTML tables styled as bar charts
+# SimpleBars
+
+Come with CSV data. Leave with responsive bar charts made from semantic, accessible HTML tables.

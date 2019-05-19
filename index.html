@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Simple Bars</title>
+	<meta name="description" content="Come with CSV data. Leave with responsive bar charts made from semantic, accessible HTML tables.">
+
+	<link rel="stylesheet" href="main.css">
+
+</head>
+
+<body>
+
+	<form>
+		<div>
+			<label for="chart-title">Chart Title</label><br>
+			<input type="text" id="chart-title" size="40" value="The Beatles, ranked">
+		</div>
+		<div>
+			<input type="checkbox" name="responsive" id="responsive" checked>
+			<label for="responsive">Responsive</label><br>
+			<label for="breakpoint">Breakpoint:</label>
+			<input type="number" id="breakpoint" min="1" max="1000" value="30"> em<br>
+			<label for="label-width">Label Width:</label>
+			<input type="number" id="label-width" min="1" max="100" value="10"> em
+		</div>
+		<div>
+			<label for="csv">CSV Data</label><br>
+			<textarea id="csv" rows="10" cols="40">Beatle,Value
+George Harrison,3
+John Lennon,2
+Paul McCartney,4
+Ringo Starr,1</textarea>
+		</div>
+		<div>
+			<input type="submit" id="captureButton" value="Generate Embed Code">
+		</div>
+		<div>
+			<label for="output">Embed Code</label><br>
+			<textarea id="output" rows="10" cols="40"></textarea>
+		</div>
+	</form>
+
+	<div>Preview</div>
+
+	<div id="preview"></div>
+	
+	<script src="scripts.js"></script>
+
+</body>
+
+</html>
