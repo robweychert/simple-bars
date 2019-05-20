@@ -114,7 +114,7 @@ function buildChart(e) {
 			+ '  }\n';
 		if (headers.length > 2) {
 			tableCSS +=
-				+ '  table.simplebars.multi .label {\n'
+				'  table.simplebars.multi .label {\n'
 				+ '    margin-left: calc(' + document.getElementById('label-width').value + 'em + 0.75em);\n'
 				+ '    margin-bottom: 0.5em;\n'
 				+ '  }\n';
@@ -194,4 +194,4 @@ function buildChart(e) {
 
 document.addEventListener('DOMContentLoaded', buildChart);
 document.getElementById('responsive').addEventListener('click', function() { activate(document.getElementById('breakpoint')); activate(document.getElementById('label-width')) });
-document.getElementById('captureButton').addEventListener('click', buildChart);
+document.getElementById('generateEmbed').addEventListener('click', buildChart);
