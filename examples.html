@@ -26,27 +26,15 @@ table.simplebars * {
 table.simplebars thead {
 	display: none;
 }
-table.simplebars.multi {
-	border-bottom: 0.1em solid hsla(0,0%,60%,0.5);
-}
 table.simplebars .datapoint {
-	margin-bottom: 0.75em;
-}
-table.simplebars.multi .datapoint {
-	border-top: 0.1em solid hsla(0,0%,60%,0.5);
-}
-table.simplebars.multi .label {
-	font-weight: bold;
+	align-items: center;
+	display: grid;
 	margin: 0.75em 0;
 }
-table.simplebars.multi .amount {
-	margin-bottom: 0.5em;
+table.simplebars .label {
+	margin-bottom: 0.25em;
 }
-
-table.simplebars.multi .amount:before {
-	content: attr(data-sublabel);
-}
-table.simplebars .amount span {
+table.simplebars .amount {
 	-moz-font-feature-settings:"tnum" 1; 
 	-ms-font-feature-settings:"tnum" 1; 
 	-o-font-feature-settings:"tnum" 1; 
@@ -57,54 +45,44 @@ table.simplebars .amount span {
 	vertical-align: middle;
 	white-space: nowrap;
 }
-table.simplebars .amount span:before {
-	background: red;
+table.simplebars .amount:before {
+	background: hsl(30,100%,60%);
+	clear: left;
 	content: "";
-	display: inline-block;
-	height: 1em;
+	display: block;
+	float: left;
+	height: 1.2em;
 	margin-right: 1ch;
-	vertical-align: -0.2em;
 }
 
 @media screen and (min-width: 40em) { /* customizable */
 
-	table.simplebars.single .datapoint,
-	table.simplebars.multi .amount {
-		align-items: center;
-		display: grid;
-		grid-gap: 0.75em;
-		grid-template-columns: 5em 1fr; /* left column customizable */
-		margin-bottom: 0.5em;
+	table.simplebars .datapoint {
+		grid-gap: 0 1ch;
+		grid-template-columns: 20ch 1fr; /* left column customizable */
+		margin: 0.6em 0;
 	}
-	table.simplebars.single .label,
-	table.simplebars .amount:before {
+	table.simplebars.multi .datapoint {
+		margin: 2em 0;
+	}
+	table.simplebars .label {
+		margin-bottom: 0;
 		text-align: right;
 	}
 	table.simplebars.multi .label {
-		margin-left: calc(5em + 0.75em);
-		margin-bottom: 0.5em;
+		grid-row-end: span 2; /* based on number of bars */
+	}
+	table.simplebars .amount {
+		grid-column-start: 2;
 	}
 }
 
 /* Single */
 
-table.simplebars.single .datapoint:nth-child(1) .amount span:before { width: 75%; }
-table.simplebars.single .datapoint:nth-child(2) .amount span:before { width: 50%; }
-table.simplebars.single .datapoint:nth-child(3) .amount span:before { width: 100%; }
-table.simplebars.single .datapoint:nth-child(4) .amount span:before { width: 25%; }
-
-/* Multi */
-
-table.simplebars.multi .amount:nth-child(2) span:before { background: violet; }
-table.simplebars.multi .amount:nth-child(3) span:before { background: rebeccapurple; }
-table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(2) span:before { width: 75%; }
-table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(3) span:before { width: 50%; }
-table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(2) span:before { width: 50%; }
-table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(3) span:before { width: 25%; }
-table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(2) span:before { width: 100%; }
-table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(3) span:before { width: 75%; }
-table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(2) span:before { width: 25%; }
-table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3) span:before { width: 100%; }
+table.simplebars.single .datapoint:nth-child(1) .amount:before { width: 100%; }
+table.simplebars.single .datapoint:nth-child(2) .amount:before { width: 75%; }
+table.simplebars.single .datapoint:nth-child(3) .amount:before { width: 50%; }
+table.simplebars.single .datapoint:nth-child(4) .amount:before { width: 25%; }
 
 </style>
 
@@ -117,23 +95,38 @@ table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3) span:before 
 	</thead>
 	<tbody role="rowgroup">
 		<tr class="datapoint" role="row">
+			<td class="label" role="cell">Paul McCartney</td>
+			<td class="amount" role="cell">4</td>
+		</tr>
+		<tr class="datapoint" role="row">
 			<td class="label" role="cell">George Harrison</td>
-			<td class="amount" role="cell"><span>3</span></td>
+			<td class="amount" role="cell">3</td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">John Lennon</td>
-			<td class="amount" role="cell"><span>2</span></td>
-		</tr>
-		<tr class="datapoint" role="row">
-			<td class="label" role="cell">Paul McCartney, let’s give him a bunch of text</td>
-			<td class="amount" role="cell"><span>4</span></td>
+			<td class="amount" role="cell">2</td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">Ringo Starr</td>
-			<td class="amount" role="cell"><span>1</span></td>
+			<td class="amount" role="cell">1</td>
 		</tr>
 	</tbody>
 </table>
+
+<style>
+/* Multi */
+
+table.simplebars.multi .amount:nth-child(2):before { background: hsl(30,100%,60%); }
+table.simplebars.multi .amount:nth-child(3):before { background: hsl(30,100%,40%); }
+table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(2):before { width: 100%; }
+table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(3):before { width: 75%; }
+table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(2):before { width: 75%; }
+table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(3):before { width: 50%; }
+table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(2):before { width: 50%; }
+table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(3):before { width: 25%; }
+table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(2):before { width: 25%; }
+table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3):before { width: 100%; }
+</style>
 
 <table id="the-beatles-ranked" class="simplebars multi" role="table">
 	<thead role="rowgroup">
@@ -145,24 +138,24 @@ table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3) span:before 
 	</thead>
 	<tbody role="rowgroup">
 		<tr class="datapoint" role="row">
+			<td class="label" role="cell">Paul McCartney</td>
+			<td class="amount" role="cell">4</td>
+			<td class="amount" role="cell">3</td>
+		</tr>
+		<tr class="datapoint" role="row">
 			<td class="label" role="cell">George Harrison</td>
-			<td class="amount" role="cell" data-sublabel="Value 1"><span>3</span></td>
-			<td class="amount" role="cell" data-sublabel="Value 2"><span>2</span></td>
+			<td class="amount" role="cell">3</td>
+			<td class="amount" role="cell">2</td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">John Lennon</td>
-			<td class="amount" role="cell" data-sublabel="Value 1"><span>2</span></td>
-			<td class="amount" role="cell" data-sublabel="Value 2"><span>1</span></td>
-		</tr>
-		<tr class="datapoint" role="row">
-			<td class="label" role="cell">Paul McCartney, let’s give him a bunch of text</td>
-			<td class="amount" role="cell" data-sublabel="Value 1"><span>4</span></td>
-			<td class="amount" role="cell" data-sublabel="Value 2"><span>3</span></td>
+			<td class="amount" role="cell">2</td>
+			<td class="amount" role="cell">1</td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">Ringo Starr</td>
-			<td class="amount" role="cell" data-sublabel="Value 1"><span>1</span></td>
-			<td class="amount" role="cell" data-sublabel="Value 2"><span>4</span></td>
+			<td class="amount" role="cell">1</td>
+			<td class="amount" role="cell">4</td>
 		</tr>
 	</tbody>
 </table>
