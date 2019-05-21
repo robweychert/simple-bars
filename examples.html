@@ -47,7 +47,6 @@ table.simplebars.multi .amount:before {
 	content: attr(data-sublabel);
 }
 table.simplebars .amount span {
-	color: red; /* customizable */
 	-moz-font-feature-settings:"tnum" 1; 
 	-ms-font-feature-settings:"tnum" 1; 
 	-o-font-feature-settings:"tnum" 1; 
@@ -59,7 +58,7 @@ table.simplebars .amount span {
 	white-space: nowrap;
 }
 table.simplebars .amount span:before {
-	background: currentColor;
+	background: red;
 	content: "";
 	display: inline-block;
 	height: 1em;
@@ -96,8 +95,8 @@ table.simplebars.single .datapoint:nth-child(4) .amount span:before { width: 25%
 
 /* Multi */
 
-table.simplebars.multi .amount:nth-child(2) span { color: violet; }
-table.simplebars.multi .amount:nth-child(3) span { color: rebeccapurple; }
+table.simplebars.multi .amount:nth-child(2) span:before { background: violet; }
+table.simplebars.multi .amount:nth-child(3) span:before { background: rebeccapurple; }
 table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(2) span:before { width: 75%; }
 table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(3) span:before { width: 50%; }
 table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(2) span:before { width: 50%; }
