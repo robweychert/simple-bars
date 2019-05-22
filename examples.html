@@ -23,6 +23,9 @@ table.simplebars * {
 	padding: 0;
 	vertical-align: baseline;
 }
+table.simplebars {
+	margin: 3em 0;
+}
 table.simplebars thead {
 	display: none;
 }
@@ -41,7 +44,6 @@ table.simplebars .amount {
 	-webkit-font-feature-settings:"tnum" 1; 
 	font-feature-settings:"tnum" 1;
 	overflow: visible;
-	padding-right: 2ch; /* longest digit length + 1 */
 	vertical-align: middle;
 	white-space: nowrap;
 }
@@ -55,18 +57,56 @@ table.simplebars .amount:before {
 	margin-right: 1ch;
 }
 
-@media screen and (min-width: 40em) { /* customizable */
+@media screen and (min-width: 0) { /* customizable */
 
 	table.simplebars .datapoint {
-		grid-gap: 0 1ch;
-		grid-template-columns: 20ch 1fr; /* left column customizable */
-		margin: 0.6em 0;
+		grid-template-columns: 15ch 1fr; /* left column customizable */
+		margin: 0;
 	}
-	table.simplebars.multi .datapoint {
-		margin: 2em 0;
+	table.simplebars.negative .datapoint {
+		grid-template-areas: "amount label";
+		grid-template-columns: 20% calc(80% - 2px); /* min customizable */
+		margin: 0;
+	}
+	table.simplebars.negative .datapoint.negative .label {
+		border-left: 2px solid black;
+		grid-area: label;
+		padding-left: 1ch;
+		padding-right: 0;
+		text-align: left;
+	}
+	table.simplebars.negative .datapoint.negative .amount {
+		border: 0;
+		grid-area: amount;
+		padding-left: 0;
+		padding-right: 0;
+		text-align: right;
+	}
+	table.simplebars.negative .datapoint.negative .amount:before {
+		float: right;
+		margin: 0 0 0 1ch;
+	}
+	table.simplebars.single td {
+		margin: 0;
+		padding-top: 0.3em;
+		padding-bottom: 0.3em;
+	}
+	table.simplebars.negative .amount {
+		border-left: 2px solid black;
+	}
+	table.simplebars.multi td:first-child {
+		padding-top: 1em;
+		padding-bottom: 1em;
+	}
+	table.simplebars.multi td:nth-child(2) {
+		padding-top: 1em;
+	}
+	table.simplebars.multi td:last-child {
+		padding-bottom: 1em;
 	}
 	table.simplebars .label {
 		margin-bottom: 0;
+		padding-right: 1ch;
 		text-align: right;
 	}
 	table.simplebars.multi .label {
@@ -79,14 +119,15 @@ table.simplebars .amount:before {
 
 /* Single */
 
-table.simplebars.single .datapoint:nth-child(1) .amount:before { width: 100%; }
-table.simplebars.single .datapoint:nth-child(2) .amount:before { width: 75%; }
-table.simplebars.single .datapoint:nth-child(3) .amount:before { width: 50%; }
-table.simplebars.single .datapoint:nth-child(4) .amount:before { width: 25%; }
+table.simplebars.single .datapoint:nth-child(1) .amount:before { width: calc(100% - 3ch); } /* ch value determined by highest digit length */
+table.simplebars.single .datapoint:nth-child(2) .amount:before { width: calc(75% - 3ch); }
+table.simplebars.single .datapoint:nth-child(3) .amount:before { width: calc(50% - 3ch); }
+table.simplebars.single .datapoint:nth-child(4) .amount:before { width: calc(25% - 3ch); }
+table.simplebars.single .datapoint:nth-child(5) .amount:before { width: calc(100% - 3ch); }
 
 </style>
 
-<table class="simplebars single" role="table">
+<table class="simplebars single negative" role="table">
 	<thead role="rowgroup">
 		<tr>
 			<th role="columnheader">Beatle</th>
@@ -110,6 +151,10 @@ table.simplebars.single .datapoint:nth-child(4) .amount:before { width: 25%; }
 			<td class="label" role="cell">Ringo Starr</td>
 			<td class="amount" role="cell">1</td>
 		</tr>
+		<tr class="datapoint negative" role="row">
+			<td class="label" role="cell">Rob Weychert</td>
+			<td class="amount" role="cell">-1</td>
+		</tr>
 	</tbody>
 </table>
 
@@ -118,17 +163,17 @@ table.simplebars.single .datapoint:nth-child(4) .amount:before { width: 25%; }
 
 table.simplebars.multi .amount:nth-child(2):before { background: hsl(30,100%,60%); }
 table.simplebars.multi .amount:nth-child(3):before { background: hsl(30,100%,40%); }
-table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(2):before { width: 100%; }
-table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(3):before { width: 75%; }
-table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(2):before { width: 75%; }
-table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(3):before { width: 50%; }
-table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(2):before { width: 50%; }
-table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(3):before { width: 25%; }
-table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(2):before { width: 25%; }
-table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3):before { width: 100%; }
+table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(2):before { width: calc(100% - 3ch); }
+table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(3):before { width: calc(75% - 3ch); }
+table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(2):before { width: calc(75% - 3ch); }
+table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(3):before { width: calc(50% - 3ch); }
+table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(2):before { width: calc(50% - 3ch); }
+table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(3):before { width: calc(25% - 3ch); }
+table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(2):before { width: calc(25% - 3ch); }
+table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3):before { width: calc(100% - 3ch); }
 </style>
 
-<table id="the-beatles-ranked" class="simplebars multi" role="table">
+<table id="the-beatles-ranked" class="simplebars multi negative" role="table">
 	<thead role="rowgroup">
 		<tr>
 			<th role="columnheader">Beatle</th>
