@@ -33,6 +33,7 @@ table.simplebars .datapoint {
 	align-items: center;
 	display: grid;
 	margin: 0.75em 0;
+	padding-right: 3ch;
 }
 table.simplebars .label {
 	margin-bottom: 0.25em;
@@ -56,6 +57,9 @@ table.simplebars .amount:before {
 	height: 1.2em;
 	margin-right: 1ch;
 }
+table.simplebars .amount span {
+	/*position: absolute;*/
+}
 
 @media screen and (min-width: 0) { /* customizable */
 
@@ -67,6 +71,8 @@ table.simplebars .amount:before {
 		grid-template-areas: "amount label";
 		grid-template-columns: 20% calc(80% - 2px); /* min customizable */
 		margin: 0;
+		padding-left: 3ch;
+		padding-right: 3ch;
 	}
 	table.simplebars.negative .datapoint.negative .label {
 		border-left: 2px solid black;
@@ -119,11 +125,11 @@ table.simplebars .amount:before {
 
 /* Single */
 
-table.simplebars.single .datapoint:nth-child(1) .amount:before { width: calc(100% - 3ch); } /* ch value determined by highest digit length */
-table.simplebars.single .datapoint:nth-child(2) .amount:before { width: calc(75% - 3ch); }
-table.simplebars.single .datapoint:nth-child(3) .amount:before { width: calc(50% - 3ch); }
-table.simplebars.single .datapoint:nth-child(4) .amount:before { width: calc(25% - 3ch); }
-table.simplebars.single .datapoint:nth-child(5) .amount:before { width: calc(100% - 3ch); }
+table.simplebars.single .datapoint:nth-child(1) .amount:before { width: 100%; } /* ch value determined by highest digit length */
+table.simplebars.single .datapoint:nth-child(2) .amount:before { width: 75%; }
+table.simplebars.single .datapoint:nth-child(3) .amount:before { width: 50%; }
+table.simplebars.single .datapoint:nth-child(4) .amount:before { width: 25%; }
+table.simplebars.single .datapoint:nth-child(5) .amount:before { width: 100%; }
 
 </style>
 
@@ -137,23 +143,23 @@ table.simplebars.single .datapoint:nth-child(5) .amount:before { width: calc(100
 	<tbody role="rowgroup">
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">Paul McCartney</td>
-			<td class="amount" role="cell">4</td>
+			<td class="amount" role="cell"><span>4</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">George Harrison</td>
-			<td class="amount" role="cell">3</td>
+			<td class="amount" role="cell"><span>3</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">John Lennon</td>
-			<td class="amount" role="cell">2</td>
+			<td class="amount" role="cell"><span>2</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">Ringo Starr</td>
-			<td class="amount" role="cell">1</td>
+			<td class="amount" role="cell"><span>1</span></td>
 		</tr>
 		<tr class="datapoint negative" role="row">
 			<td class="label" role="cell">Rob Weychert</td>
-			<td class="amount" role="cell">-1</td>
+			<td class="amount" role="cell"><span>-1</span></td>
 		</tr>
 	</tbody>
 </table>
@@ -163,14 +169,14 @@ table.simplebars.single .datapoint:nth-child(5) .amount:before { width: calc(100
 
 table.simplebars.multi .amount:nth-child(2):before { background: hsl(30,100%,60%); }
 table.simplebars.multi .amount:nth-child(3):before { background: hsl(30,100%,40%); }
-table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(2):before { width: calc(100% - 3ch); }
-table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(3):before { width: calc(75% - 3ch); }
-table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(2):before { width: calc(75% - 3ch); }
-table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(3):before { width: calc(50% - 3ch); }
-table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(2):before { width: calc(50% - 3ch); }
-table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(3):before { width: calc(25% - 3ch); }
-table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(2):before { width: calc(25% - 3ch); }
-table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3):before { width: calc(100% - 3ch); }
+table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(2):before { width: 100%; }
+table.simplebars.multi .datapoint:nth-child(1) .amount:nth-child(3):before { width: 75%; }
+table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(2):before { width: 75%; }
+table.simplebars.multi .datapoint:nth-child(2) .amount:nth-child(3):before { width: 50%; }
+table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(2):before { width: 50%; }
+table.simplebars.multi .datapoint:nth-child(3) .amount:nth-child(3):before { width: 25%; }
+table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(2):before { width: 25%; }
+table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3):before { width: 100%; }
 </style>
 
 <table id="the-beatles-ranked" class="simplebars multi negative" role="table">
@@ -184,23 +190,23 @@ table.simplebars.multi .datapoint:nth-child(4) .amount:nth-child(3):before { wid
 	<tbody role="rowgroup">
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">Paul McCartney</td>
-			<td class="amount" role="cell">4</td>
-			<td class="amount" role="cell">3</td>
+			<td class="amount" role="cell"><span>4</span></td>
+			<td class="amount" role="cell"><span>3</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">George Harrison</td>
-			<td class="amount" role="cell">3</td>
-			<td class="amount" role="cell">2</td>
+			<td class="amount" role="cell"><span>3</span></td>
+			<td class="amount" role="cell"><span>2</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">John Lennon</td>
-			<td class="amount" role="cell">2</td>
-			<td class="amount" role="cell">1</td>
+			<td class="amount" role="cell"><span>2</span></td>
+			<td class="amount" role="cell"><span>1</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
 			<td class="label" role="cell">Ringo Starr</td>
-			<td class="amount" role="cell">1</td>
-			<td class="amount" role="cell">4</td>
+			<td class="amount" role="cell"><span>1</span></td>
+			<td class="amount" role="cell"><span>4</span></td>
 		</tr>
 	</tbody>
 </table>

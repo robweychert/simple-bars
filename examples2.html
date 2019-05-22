@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Simple Bars examples 2</title>
+
+</head>
+<body>
+
+<style>
+#the-beatles-ranked {
+	--amount-max: 4;
+	--amount-min: -1;
+	--amount-range: calc(var(--amount-max) - var(--amount-min));
+	--bg-color: transparent;
+	--digit-width: 8ch; /* 1+ longest digit char count + unit char count (unless unit not included) */
+	--hue: 40;
+	--label-width: 15ch; /* default: longest label char count */
+	--line-height: 1.2;
+	--text-color: inherit;
+	--zero-line: 2px solid currentColor;
+}
+body {
+	font-family: system-ui, -apple-system, sans-serif;
+}
+table.simplebars,
+table.simplebars * {
+	border: 0;
+	box-sizing: border-box;
+	display: block;
+	font: inherit;
+	line-height: var(--line-height);
+	margin: 0;
+	padding: 0;
+	vertical-align: baseline;
+}
+table.simplebars {
+	background: var(--bg-color);
+	color: var(--text-color);
+	padding: 1em 1em 1.25em 1em;
+}
+table.simplebars.negative {
+	min-width: calc((var(--label-width) * 2) + (var(--digit-width) * 2) + 2em);
+}
+table.simplebars caption {
+	font-weight: bold;
+	margin-bottom: 1em;
+	text-align: center;
+}
+table.simplebars thead {
+	display: none;
+}
+table.simplebars tbody {
+	padding-right: var(--digit-width);
+}
+table.simplebars.negative tbody {
+	padding: 0 var(--digit-width);
+}
+table.simplebars .datapoint {
+	align-items: center;
+	display: grid;
+	grid-template-columns: var(--label-width) 1fr;
+	margin-left: auto;
+}
+table.simplebars .datapoint td {
+	padding-top: calc(1em * (var(--line-height) / 4));
+	padding-bottom: calc(1em * (var(--line-height) / 4));
+}
+table.simplebars.negative .datapoint {
+	max-width: calc(var(--label-width) + (100% - (100% * ((var(--amount-min) * -1) / var(--amount-range)))));
+}
+table.simplebars .datapoint.negative {
+	grid-template-areas: "amount label";
+	grid-template-columns: calc(100% * ((var(--amount-min) * -1) / var(--amount-range))) calc(100% * (var(--amount-max) / var(--amount-range)));
+	max-width: calc((100% - var(--label-width)) + ((100% - var(--label-width)) / (var(--amount-max) / (var(--amount-min) * -1))));
+}
+table.simplebars .label {
+	min-width: var(--label-width);
+	padding-right: 1ch;
+	text-align: right;
+}
+table.simplebars .datapoint.negative .label {
+	grid-area: label;
+	padding-left: 1ch;
+	text-align: left;
+}
+table.simplebars .amount {
+	-moz-font-feature-settings:"tnum" 1; 
+	-ms-font-feature-settings:"tnum" 1; 
+	-o-font-feature-settings:"tnum" 1; 
+	-webkit-font-feature-settings:"tnum" 1; 
+	font-feature-settings:"tnum" 1;
+	position: relative;
+}
+table.simplebars.negative .amount {
+	border-left: var(--zero-line);
+}
+table.simplebars .amount:before {
+	background: hsl(var(--hue),100%,50%);
+	content: "";
+	display: block;
+	height: calc(1em * var(--line-height));
+}
+table.simplebars .amount span {
+	padding-left: 1ch;
+	position: absolute;
+	left: 100%;
+	text-align: left;
+	top: calc(1em * (var(--line-height) / 4));
+	width: var(--digit-width);
+}
+table.simplebars .datapoint.negative .amount {
+	border: 0;
+	grid-area: amount;
+}
+table.simplebars .datapoint.negative .amount:before {
+	float: right;
+}
+table.simplebars .datapoint.negative .amount span {
+	left: auto;
+	overflow: visible;
+	padding: 0 1ch 0 0;
+	right: 100%;
+	text-align: right;
+	white-space: nowrap;
+}
+table.simplebars .datapoint.negative .label {
+	border-left: var(--zero-line);
+}
+
+#the-beatles-ranked .datapoint:nth-child(1) .amount:nth-child(2):before { width: calc(100% * (4 / var(--amount-max))); }
+#the-beatles-ranked .datapoint:nth-child(1) .amount:nth-child(2) span { left: calc(100% * (4 / var(--amount-max))); }
+#the-beatles-ranked .datapoint:nth-child(2) .amount:nth-child(2):before { width: calc(100% * (3 / var(--amount-max))); }
+#the-beatles-ranked .datapoint:nth-child(2) .amount:nth-child(2) span { left: calc(100% * (3 / var(--amount-max))); }
+#the-beatles-ranked .datapoint:nth-child(3) .amount:nth-child(2):before { width: calc(100% * (2 / var(--amount-max))); }
+#the-beatles-ranked .datapoint:nth-child(3) .amount:nth-child(2) span { left: calc(100% * (2 / var(--amount-max))); }
+#the-beatles-ranked .datapoint:nth-child(4) .amount:nth-child(2):before { width: calc(100% * (1 / var(--amount-max))) }
+#the-beatles-ranked .datapoint:nth-child(4) .amount:nth-child(2) span { left: calc(100% * (1 / var(--amount-max))) }
+#the-beatles-ranked .datapoint:nth-child(5) .amount:nth-child(2):before { width: calc(100% * (1 / (var(--amount-min) * -1))); }
+#the-beatles-ranked .datapoint:nth-child(5) .amount:nth-child(2) span { right: calc(100% * (1 / (var(--amount-min) * -1))); }
+
+</style>
+
+<table id="the-beatles-ranked" class="simplebars single negative" role="table" aria-describedby="caption-the-beatles-ranked">
+	<caption id="caption-the-beatles-ranked">The Beatles, ranked</caption>
+	<thead role="rowgroup">
+		<tr>
+			<th role="columnheader">Beatle</th>
+			<th role="columnheader">Value</th>
+		</tr>
+	</thead>
+	<tbody role="rowgroup">
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">Paul McCartney</td>
+			<td class="amount" role="cell"><span>4 stars</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">George Harrison</td>
+			<td class="amount" role="cell"><span>3</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">John Lennon</td>
+			<td class="amount" role="cell"><span>2</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">Ringo Starr</td>
+			<td class="amount" role="cell"><span>1</span></td>
+		</tr>
+		<tr class="datapoint negative" role="row">
+			<td class="label" role="cell">Rob Weychert</td>
+			<td class="amount" role="cell"><span>-1</span></td>
+		</tr>
+	</tbody>
+</table>
+</body>
+</html>
