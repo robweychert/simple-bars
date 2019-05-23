@@ -12,20 +12,25 @@
 <body>
 
 <style>
-#the-beatles-ranked {
+
+body {
+	font-family: system-ui, -apple-system, sans-serif;
+}
+body > table.simplebars {
+	margin: 0.6em 0;
+}
+
+table.simplebars {
 	--amount-max: 4;
 	--amount-min: -1;
 	--amount-range: calc(var(--amount-max) - var(--amount-min));
-	--bg-color: transparent;
+	--bg-color: hsl(0,0%,94%);
 	--digit-width: 8ch; /* 1+ longest digit char count + unit char count (unless unit not included) */
 	--hue: 40;
 	--label-width: 15ch; /* default: longest label char count */
 	--line-height: 1.2;
 	--text-color: inherit;
 	--zero-line: 2px solid currentColor;
-}
-body {
-	font-family: system-ui, -apple-system, sans-serif;
 }
 table.simplebars,
 table.simplebars * {
@@ -41,15 +46,18 @@ table.simplebars * {
 table.simplebars {
 	background: var(--bg-color);
 	color: var(--text-color);
-	padding: 1em 1em 1.25em 1em;
+	padding: 1em 0 1.25em 0;
 }
 table.simplebars.negative {
-	min-width: calc((var(--label-width) * 2) + (var(--digit-width) * 2) + 2em);
+	min-width: calc(var(--label-width) * 2);
 }
 table.simplebars caption {
 	font-weight: bold;
-	margin-bottom: 1em;
+	margin-bottom: calc(var(--line-height) * 1em);
 	text-align: center;
+}
+table.simplebars.multi caption {
+	margin-bottom: calc(var(--line-height) * 0.5em);;
 }
 table.simplebars thead {
 	display: none;
@@ -58,7 +66,8 @@ table.simplebars tbody {
 	padding-right: var(--digit-width);
 }
 table.simplebars.negative tbody {
-	padding: 0 var(--digit-width);
+	/*padding-left: var(--digit-width);*/ /* only if negative is largest integer or gets the unit */
+	/*padding-right: 0;*/
 }
 table.simplebars .datapoint {
 	align-items: center;
@@ -66,7 +75,7 @@ table.simplebars .datapoint {
 	grid-template-columns: var(--label-width) 1fr;
 	margin-left: auto;
 }
-table.simplebars .datapoint td {
+table.simplebars.single .datapoint td {
 	padding-top: calc(1em * (var(--line-height) / 4));
 	padding-bottom: calc(1em * (var(--line-height) / 4));
 }
@@ -83,6 +92,11 @@ table.simplebars .label {
 	padding-right: 1ch;
 	text-align: right;
 }
+table.simplebars.multi .label {
+	grid-row-end: span 2; /* multi chart only */
+	padding-top: calc(var(--line-height) * 0.5em);
+	padding-bottom: calc(var(--line-height) * 0.5em);
+}
 table.simplebars .datapoint.negative .label {
 	grid-area: label;
 	padding-left: 1ch;
@@ -94,7 +108,13 @@ table.simplebars .amount {
 	-o-font-feature-settings:"tnum" 1; 
 	-webkit-font-feature-settings:"tnum" 1; 
 	font-feature-settings:"tnum" 1;
+	grid-column-start: 2;
 	position: relative;
+}
+table.simplebars.multi td:nth-child(2) {
+	padding-top: calc(var(--line-height) * 0.5em);
+}table.simplebars.multi td:last-child {
+	padding-bottom: calc(var(--line-height) * 0.5em);
 }
 table.simplebars.negative .amount {
 	border-left: var(--zero-line);
@@ -103,14 +123,17 @@ table.simplebars .amount:before {
 	background: hsl(var(--hue),100%,50%);
 	content: "";
 	display: block;
+	float: left;
 	height: calc(1em * var(--line-height));
+}
+table.simplebars .datapoint.negative .amount:before {
+	float: right;
 }
 table.simplebars .amount span {
 	padding-left: 1ch;
 	position: absolute;
 	left: 100%;
 	text-align: left;
-	top: calc(1em * (var(--line-height) / 4));
 	width: var(--digit-width);
 }
 table.simplebars .datapoint.negative .amount {
@@ -132,21 +155,60 @@ table.simplebars .datapoint.negative .label {
 	border-left: var(--zero-line);
 }
 
-#the-beatles-ranked .datapoint:nth-child(1) .amount:nth-child(2):before { width: calc(100% * (4 / var(--amount-max))); }
-#the-beatles-ranked .datapoint:nth-child(1) .amount:nth-child(2) span { left: calc(100% * (4 / var(--amount-max))); }
-#the-beatles-ranked .datapoint:nth-child(2) .amount:nth-child(2):before { width: calc(100% * (3 / var(--amount-max))); }
-#the-beatles-ranked .datapoint:nth-child(2) .amount:nth-child(2) span { left: calc(100% * (3 / var(--amount-max))); }
-#the-beatles-ranked .datapoint:nth-child(3) .amount:nth-child(2):before { width: calc(100% * (2 / var(--amount-max))); }
-#the-beatles-ranked .datapoint:nth-child(3) .amount:nth-child(2) span { left: calc(100% * (2 / var(--amount-max))); }
-#the-beatles-ranked .datapoint:nth-child(4) .amount:nth-child(2):before { width: calc(100% * (1 / var(--amount-max))) }
-#the-beatles-ranked .datapoint:nth-child(4) .amount:nth-child(2) span { left: calc(100% * (1 / var(--amount-max))) }
-#the-beatles-ranked .datapoint:nth-child(5) .amount:nth-child(2):before { width: calc(100% * (1 / (var(--amount-min) * -1))); }
-#the-beatles-ranked .datapoint:nth-child(5) .amount:nth-child(2) span { right: calc(100% * (1 / (var(--amount-min) * -1))); }
+#single-positive .datapoint:nth-child(1) .amount:nth-child(2):before { width: calc(100% * (4 / var(--amount-max))); }
+#single-positive .datapoint:nth-child(1) .amount:nth-child(2) span { left: calc(100% * (4 / var(--amount-max))); }
+#single-positive .datapoint:nth-child(2) .amount:nth-child(2):before { width: calc(100% * (3 / var(--amount-max))); }
+#single-positive .datapoint:nth-child(2) .amount:nth-child(2) span { left: calc(100% * (3 / var(--amount-max))); }
+#single-positive .datapoint:nth-child(3) .amount:nth-child(2):before { width: calc(100% * (2 / var(--amount-max))); }
+#single-positive .datapoint:nth-child(3) .amount:nth-child(2) span { left: calc(100% * (2 / var(--amount-max))); }
+#single-positive .datapoint:nth-child(4) .amount:nth-child(2):before { width: calc(100% * (1 / var(--amount-max))); }
+#single-positive .datapoint:nth-child(4) .amount:nth-child(2) span { left: calc(100% * (1 / var(--amount-max))); }
 
 </style>
 
-<table id="the-beatles-ranked" class="simplebars single negative" role="table" aria-describedby="caption-the-beatles-ranked">
-	<caption id="caption-the-beatles-ranked">The Beatles, ranked</caption>
+<table id="single-positive" class="simplebars single" role="table" aria-describedby="caption-single-positive">
+	<caption id="caption-single-positive">Single, positive</caption>
+	<thead role="rowgroup">
+		<tr>
+			<th role="columnheader">Beatle</th>
+			<th role="columnheader">Value</th>
+		</tr>
+	</thead>
+	<tbody role="rowgroup">
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">Paul McCartney</td>
+			<td class="amount" role="cell"><span>4 stars</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">George Harrison</td>
+			<td class="amount" role="cell"><span>3</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">John Lennon</td>
+			<td class="amount" role="cell"><span>2</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">Ringo Starr</td>
+			<td class="amount" role="cell"><span>1</span></td>
+		</tr>
+	</tbody>
+</table>
+
+<style>
+#single-positive-negative .datapoint:nth-child(1) .amount:nth-child(2):before { width: calc(100% * (4 / var(--amount-max))); }
+#single-positive-negative .datapoint:nth-child(1) .amount:nth-child(2) span { left: calc(100% * (4 / var(--amount-max))); }
+#single-positive-negative .datapoint:nth-child(2) .amount:nth-child(2):before { width: calc(100% * (3 / var(--amount-max))); }
+#single-positive-negative .datapoint:nth-child(2) .amount:nth-child(2) span { left: calc(100% * (3 / var(--amount-max))); }
+#single-positive-negative .datapoint:nth-child(3) .amount:nth-child(2):before { width: calc(100% * (2 / var(--amount-max))); }
+#single-positive-negative .datapoint:nth-child(3) .amount:nth-child(2) span { left: calc(100% * (2 / var(--amount-max))); }
+#single-positive-negative .datapoint:nth-child(4) .amount:nth-child(2):before { width: calc(100% * (1 / var(--amount-max))); }
+#single-positive-negative .datapoint:nth-child(4) .amount:nth-child(2) span { left: calc(100% * (1 / var(--amount-max))); }
+#single-positive-negative .datapoint:nth-child(5) .amount:nth-child(2):before { width: calc(100% * (1 / (var(--amount-min) * -1))); }
+#single-positive-negative .datapoint:nth-child(5) .amount:nth-child(2) span { right: calc(100% * (1 / (var(--amount-min) * -1))); }
+</style>
+
+<table id="single-positive-negative" class="simplebars single negative" role="table" aria-describedby="caption-single-positive-negative">
+	<caption id="caption-single-positive-negative">Single, positive/negative</caption>
 	<thead role="rowgroup">
 		<tr>
 			<th role="columnheader">Beatle</th>
@@ -173,6 +235,59 @@ table.simplebars .datapoint.negative .label {
 		<tr class="datapoint negative" role="row">
 			<td class="label" role="cell">Rob Weychert</td>
 			<td class="amount" role="cell"><span>-1</span></td>
+		</tr>
+	</tbody>
+</table>
+
+<style>
+#multi-positive .datapoint:nth-child(1) .amount:nth-child(2):before { width: calc(100% * (4 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(1) .amount:nth-child(2) span { left: calc(100% * (4 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(1) .amount:nth-child(3):before { width: calc(100% * (2.5 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(1) .amount:nth-child(3) span { left: calc(100% * (2.5 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(2) .amount:nth-child(2):before { width: calc(100% * (3 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(2) .amount:nth-child(2) span { left: calc(100% * (3 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(2) .amount:nth-child(3):before { width: calc(100% * (1.5 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(2) .amount:nth-child(3) span { left: calc(100% * (1.5 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(3) .amount:nth-child(2):before { width: calc(100% * (2 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(3) .amount:nth-child(2) span { left: calc(100% * (2 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(3) .amount:nth-child(3):before { width: calc(100% * (0.5 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(3) .amount:nth-child(3) span { left: calc(100% * (0.5 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(4) .amount:nth-child(2):before { width: calc(100% * (1 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(4) .amount:nth-child(2) span { left: calc(100% * (1 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(4) .amount:nth-child(3):before { width: calc(100% * (2 / var(--amount-max))); }
+#multi-positive .datapoint:nth-child(4) .amount:nth-child(3) span { left: calc(100% * (2 / var(--amount-max))); }
+#multi-positive .amount:nth-child(2):before { background: hsl(var(--hue),100%,60%); }
+#multi-positive .amount:nth-child(3):before { background: hsl(var(--hue),100%,40%); }
+</style>
+
+<table id="multi-positive" class="simplebars multi" role="table" aria-describedby="caption-multi-positive">
+	<caption id="caption-multi-positive">Multi, positive</caption>
+	<thead role="rowgroup">
+		<tr>
+			<th role="columnheader">Beatle</th>
+			<th role="columnheader">Value</th>
+		</tr>
+	</thead>
+	<tbody role="rowgroup">
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">Paul McCartney</td>
+			<td class="amount" role="cell"><span>4 stars</span></td>
+			<td class="amount" role="cell"><span>2.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">George Harrison</td>
+			<td class="amount" role="cell"><span>3</span></td>
+			<td class="amount" role="cell"><span>1.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">John Lennon</td>
+			<td class="amount" role="cell"><span>2</span></td>
+			<td class="amount" role="cell"><span>0.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="label" role="cell">Ringo Starr</td>
+			<td class="amount" role="cell"><span>1</span></td>
+			<td class="amount" role="cell"><span>2</span></td>
 		</tr>
 	</tbody>
 </table>
