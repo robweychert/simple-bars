@@ -25,7 +25,8 @@ table.simplebars {
 	--amount-min: -1;
 	--amount-range: calc(var(--amount-max) - var(--amount-min));
 	--bg-color: hsl(0,0%,94%);
-	--digit-width: 8ch; /* 1+ longest digit char count + unit char count (unless unit not included) */
+	--digit-width: 5ch; /* longest digit char count + (unit char count / 2) */
+	--digit-unit-width: 8ch; /* longest digit char count + unit char count (unless unit not included) + 1 */
 	--hue: 40;
 	--label-width: 15ch; /* default: longest label char count */
 	--line-height: 1.2;
@@ -49,7 +50,7 @@ table.simplebars {
 	padding: 1em 0 1.25em 0;
 }
 table.simplebars.negative {
-	min-width: calc(var(--label-width) * 2);
+	min-width: calc((var(--label-width) * 2) + var(--digit-width) + var(--digit-unit-width));
 }
 table.simplebars caption {
 	font-weight: bold;
@@ -63,11 +64,12 @@ table.simplebars thead {
 	display: none;
 }
 table.simplebars tbody {
-	padding-right: var(--digit-width);
+	/*padding-right: var(--digit-width);*/ /* if largest positive gets the unit */
+	padding-right: var(--digit-unit-width);
 }
 table.simplebars.negative tbody {
-	/*padding-left: var(--digit-width);*/ /* only if negative is largest integer or gets the unit */
-	/*padding-right: 0;*/
+	padding-left: var(--digit-width);
+	/*padding-left: var(--digit-unit-width);*/ /* if smallest negative gets the unit */
 }
 table.simplebars .datapoint {
 	align-items: center;
@@ -134,7 +136,7 @@ table.simplebars .amount span {
 	position: absolute;
 	left: 100%;
 	text-align: left;
-	width: var(--digit-width);
+	width: var(--digit-unit-width);
 }
 table.simplebars .datapoint.negative .amount {
 	border: 0;
