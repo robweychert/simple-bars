@@ -43,6 +43,11 @@ body > .simplebars {
 	box-sizing: border-box;
 	display: block;
 	font: inherit;
+	-moz-font-feature-settings:"tnum" 1; 
+	-ms-font-feature-settings:"tnum" 1; 
+	-o-font-feature-settings:"tnum" 1; 
+	-webkit-font-feature-settings:"tnum" 1; 
+	font-feature-settings:"tnum" 1;
 	line-height: var(--line-height);
 	margin: 0;
 	padding: 0;
@@ -447,6 +452,60 @@ body > .simplebars {
 </table>
 
 <style>
+#horiz-multi-allneg {
+	--amt-max: -1;
+	--amt-min: -4;
+	--digit-pos: 2ch; /* length of longest positive digit + 1 (space) */
+	--digit-unit: 9ch; /* length of digit + unit */
+	--unit: " stars";
+}
+#horiz-multi-allneg .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc((4 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+#horiz-multi-allneg .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+#horiz-multi-allneg .datapoint:nth-child(2) .amt:nth-child(2) { grid-template-columns: calc((3 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+#horiz-multi-allneg .datapoint:nth-child(2) .amt:nth-child(3) { grid-template-columns: calc((1.5 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+#horiz-multi-allneg .datapoint:nth-child(3) .amt:nth-child(2) { grid-template-columns: calc((2 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+#horiz-multi-allneg .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc((0.5 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+#horiz-multi-allneg .datapoint:nth-child(4) .amt:nth-child(2) { grid-template-columns: calc((1 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+#horiz-multi-allneg .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc((2 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+</style>
+
+<table id="horiz-multi-allneg" class="simplebars horiz multi allneg" role="table" aria-describedby="caption-horiz-multi-allneg">
+	<caption id="caption-horiz-multi-allneg">
+		<strong>horiz multi allneg</strong><br>
+		horizontal, multiple comparisons, all negative values
+	</caption>
+	<thead role="rowgroup">
+		<tr>
+			<th role="columnheader">Beatle</th>
+			<th role="columnheader">Value 1</th>
+			<th role="columnheader">Value 2</th>
+		</tr>
+	</thead>
+	<tbody role="rowgroup">
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell"><span>Paul McCartney</span></td>
+			<td class="amt neg" role="cell"><span class="digit unit">-4</span></td>
+			<td class="amt neg" role="cell"><span class="digit">-2.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell"><span>George Harrison</span></td>
+			<td class="amt neg" role="cell"><span class="digit">-3</span></td>
+			<td class="amt neg" role="cell"><span class="digit">-1.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell"><span>John Lennon</span></td>
+			<td class="amt neg" role="cell"><span class="digit">-2</span></td>
+			<td class="amt neg" role="cell"><span class="digit">-0.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell"><span>Ringo Starr</span></td>
+			<td class="amt neg" role="cell"><span class="digit">-1</span></td>
+			<td class="amt neg" role="cell"><span class="digit">-2</span></td>
+		</tr>
+	</tbody>
+</table>
+
+<style>
 #horiz-multi-posneg-unitpos {
 	--amt-max: 4;
 	--amt-min: -1;
@@ -496,6 +555,61 @@ body > .simplebars {
 		<tr class="datapoint" role="row">
 			<td class="lbl" role="cell"><span>Ringo Starr</span></td>
 			<td class="amt neg" role="cell"><span class="digit">-1</span></td>
+			<td class="amt pos" role="cell"><span class="digit">2</span></td>
+		</tr>
+	</tbody>
+</table>
+
+<style>
+#horiz-multi-posneg-unitneg {
+	--amt-max: 4;
+	--amt-min: -1;
+	--digit-pos: 2ch; /* length of longest positive digit + 1 (space) */
+	--digit-neg: 4ch; /* length of longest negative digit (incl. negative sign) + 1 (space) */
+	--digit-unit: 8ch; /* length of digit + unit */
+	--unit: " stars";
+}
+#horiz-multi-posneg-unitneg .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc((4 / var(--amt-max)) * 100%) var(--digit-pos); }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / var(--amt-max)) * 100%) var(--digit-pos); grid-row: 3; }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(2) .amt:nth-child(2) { grid-template-columns: calc((3 / var(--amt-max)) * 100%) var(--digit-pos); }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(2) .amt:nth-child(3) { grid-template-columns: calc((1.5 / var(--amt-max)) * 100%) var(--digit-pos); grid-row: 3; }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(3) .amt:nth-child(2) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-pos); }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc((0.5 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); grid-row: 3; }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(4) .amt:nth-child(2) { grid-template-columns: calc((1 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-pos); grid-row: 3; }
+</style>
+
+<table id="horiz-multi-posneg-unitneg" class="simplebars horiz multi posneg unitneg" role="table" aria-describedby="caption-horiz-multi-posneg-unitneg">
+	<caption id="caption-horiz-multi-posneg-unitneg">
+		<strong>horiz multi posneg unitneg</strong><br>
+		horizontal, multiple comparisons, positive/negative values, negative gets the unit
+	</caption>
+	<thead role="rowgroup">
+		<tr>
+			<th role="columnheader">Beatle</th>
+			<th role="columnheader">Value 1</th>
+			<th role="columnheader">Value 2</th>
+		</tr>
+	</thead>
+	<tbody role="rowgroup">
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell"><span>Paul McCartney</span></td>
+			<td class="amt pos" role="cell"><span class="digit">4</span></td>
+			<td class="amt pos" role="cell"><span class="digit">2.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell"><span>George Harrison</span></td>
+			<td class="amt pos" role="cell"><span class="digit">3</span></td>
+			<td class="amt pos" role="cell"><span class="digit">1.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell"><span>John Lennon</span></td>
+			<td class="amt pos" role="cell"><span class="digit">2</span></td>
+			<td class="amt neg" role="cell"><span class="digit">-.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell"><span>Ringo Starr</span></td>
+			<td class="amt neg" role="cell"><span class="digit unit">-1</span></td>
 			<td class="amt pos" role="cell"><span class="digit">2</span></td>
 		</tr>
 	</tbody>
