@@ -21,14 +21,14 @@ body > table.simplebars {
 }
 
 table.simplebars {
-	--amount-max: 4;
-	--amount-min: -1;
-	--amount-range: calc(var(--amount-max) - var(--amount-min));
+	--amt-max: 4;
+	--amt-min: -1;
+	--amt-range: calc(var(--amt-max) - var(--amt-min));
 	--bg-color: hsl(0,0%,94%);
 	--digit-width: 5ch; /* longest digit char count + (unit char count / 2) */
 	--digit-unit-width: 8ch; /* longest digit char count + unit char count (unless unit not included) + 1 */
 	--hue: 40;
-	--label-width: 15ch; /* default: longest label char count */
+	--lbl-width: 15ch; /* default: longest lbl char count */
 	--line-height: 1.2;
 	--text-color: inherit;
 	--zero-line: 2px solid currentColor;
@@ -49,13 +49,16 @@ table.simplebars {
 	color: var(--text-color);
 	padding: 1em 0 1.25em 0;
 }
-table.simplebars.negative {
-	min-width: calc((var(--label-width) * 2) + var(--digit-width) + var(--digit-unit-width));
+table.simplebars.posneg {
+	min-width: calc((var(--lbl-width) * 2) + var(--digit-width) + var(--digit-unit-width));
 }
 table.simplebars caption {
-	font-weight: bold;
 	margin-bottom: calc(var(--line-height) * 1em);
 	text-align: center;
+}
+table.simplebars caption strong {
+	display: inline;
+	font-weight: bold;
 }
 table.simplebars.multi caption {
 	margin-bottom: calc(var(--line-height) * 0.5em);;
@@ -67,44 +70,44 @@ table.simplebars tbody {
 	/*padding-right: var(--digit-width);*/ /* if largest positive gets the unit */
 	padding-right: var(--digit-unit-width);
 }
-table.simplebars.negative tbody {
+table.simplebars.posneg tbody {
 	padding-left: var(--digit-width);
 	/*padding-left: var(--digit-unit-width);*/ /* if smallest negative gets the unit */
 }
 table.simplebars .datapoint {
 	align-items: center;
 	display: grid;
-	grid-template-columns: var(--label-width) 1fr;
+	grid-template-columns: var(--lbl-width) 1fr; /* breaks when amt-min integer > amt-max ingteger? */
 	margin-left: auto;
 }
 table.simplebars.single .datapoint td {
 	padding-top: calc(1em * (var(--line-height) / 4));
 	padding-bottom: calc(1em * (var(--line-height) / 4));
 }
-table.simplebars.negative .datapoint {
-	max-width: calc(var(--label-width) + (100% - (100% * ((var(--amount-min) * -1) / var(--amount-range)))));
+table.simplebars.posneg .datapoint {
+	max-width: calc(var(--lbl-width) + (100% - (100% * ((var(--amt-min) * -1) / var(--amt-range)))));
 }
-table.simplebars .datapoint.negative {
-	grid-template-areas: "amount label";
-	grid-template-columns: calc(100% * ((var(--amount-min) * -1) / var(--amount-range))) calc(100% * (var(--amount-max) / var(--amount-range)));
-	max-width: calc((100% - var(--label-width)) + ((100% - var(--label-width)) / (var(--amount-max) / (var(--amount-min) * -1))));
+table.simplebars .datapoint.neg {
+	grid-template-areas: "amt lbl";
+	grid-template-columns: calc(100% * ((var(--amt-min) * -1) / var(--amt-range))) calc(100% * (var(--amt-max) / var(--amt-range))); /* breaks when amt-min integer > amt-max ingteger? */
+	max-width: calc((100% - var(--lbl-width)) + ((100% - var(--lbl-width)) / (var(--amt-max) / (var(--amt-min) * -1)))); /* breaks when amt-min integer > amt-max ingteger? */
 }
-table.simplebars .label {
-	min-width: var(--label-width);
+table.simplebars .lbl {
+	min-width: var(--lbl-width);
 	padding-right: 1ch;
 	text-align: right;
 }
-table.simplebars.multi .label {
+table.simplebars.multi .lbl {
 	grid-row-end: span 2; /* multi chart only, based on td count */
 	padding-top: calc(var(--line-height) * 0.5em);
 	padding-bottom: calc(var(--line-height) * 0.5em);
 }
-table.simplebars .datapoint.negative .label {
-	grid-area: label;
+table.simplebars .datapoint.neg .lbl {
+	grid-area: lbl;
 	padding-left: 1ch;
 	text-align: left;
 }
-table.simplebars .amount {
+table.simplebars .amt {
 	display: grid;
 	-moz-font-feature-settings:"tnum" 1; 
 	-ms-font-feature-settings:"tnum" 1; 
@@ -119,47 +122,50 @@ table.simplebars.multi td:nth-child(2) {
 }table.simplebars.multi td:last-child {
 	padding-bottom: calc(var(--line-height) * 0.5em);
 }
-table.simplebars.negative .amount {
+table.simplebars.posneg .amt {
 	border-left: var(--zero-line);
 }
-table.simplebars .amount:before {
+table.simplebars .amt:before {
 	background: hsl(var(--hue),100%,50%);
 	content: "";
 	display: block;
 	height: calc(1em * var(--line-height));
 }
-table.simplebars .amount span {
+table.simplebars .amt span {
 	padding-left: 1ch;
 	text-align: left;
 	width: var(--digit-unit-width);
 }
-table.simplebars .datapoint.negative .amount {
+table.simplebars .datapoint.neg .amt {
 	border: 0;
 	direction: rtl;
-	grid-area: amount;
+	grid-area: amt;
 }
-table.simplebars .datapoint.negative .amount > * {
+table.simplebars .datapoint.neg .amt > * {
 	direction: ltr;
 }
-table.simplebars .datapoint.negative .amount span {
+table.simplebars .datapoint.neg .amt span {
 	overflow: visible;
 	padding: 0 1ch 0 0;
 	text-align: right;
 	white-space: nowrap;
 }
-table.simplebars .datapoint.negative .label {
+table.simplebars .datapoint.neg .lbl {
 	border-left: var(--zero-line);
 }
 
-#single-positive .datapoint:nth-child(1) .amount { grid-template-columns: calc(100% * (4 / var(--amount-max))) var(--digit-unit-width); }
-#single-positive .datapoint:nth-child(2) .amount { grid-template-columns: calc(100% * (3 / var(--amount-max))) var(--digit-unit-width); }
-#single-positive .datapoint:nth-child(3) .amount { grid-template-columns: calc(100% * (2 / var(--amount-max))) var(--digit-unit-width); }
-#single-positive .datapoint:nth-child(4) .amount { grid-template-columns: calc(100% * (1 / var(--amount-max))) var(--digit-unit-width); }
+#single-maxintpos .datapoint:nth-child(1) .amt { grid-template-columns: calc(100% * (4 / var(--amt-max))) var(--digit-unit-width); }
+#single-maxintpos .datapoint:nth-child(2) .amt { grid-template-columns: calc(100% * (3 / var(--amt-max))) var(--digit-unit-width); }
+#single-maxintpos .datapoint:nth-child(3) .amt { grid-template-columns: calc(100% * (2 / var(--amt-max))) var(--digit-unit-width); }
+#single-maxintpos .datapoint:nth-child(4) .amt { grid-template-columns: calc(100% * (1 / var(--amt-max))) var(--digit-unit-width); }
 
 </style>
 
-<table id="single-positive" class="simplebars single" role="table" aria-describedby="caption-single-positive">
-	<caption id="caption-single-positive">Single, positive</caption>
+<table id="single-maxintpos" class="simplebars single maxintpos" role="table" aria-describedby="caption-single-maxintpos">
+	<caption id="caption-single-maxintpos">
+		<strong>Single, maxintpos</strong><br>
+		Single comparison, largest integer is positive
+	</caption>
 	<thead role="rowgroup">
 		<tr>
 			<th role="columnheader">Beatle</th>
@@ -168,34 +174,37 @@ table.simplebars .datapoint.negative .label {
 	</thead>
 	<tbody role="rowgroup">
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">Paul McCartney</td>
-			<td class="amount" role="cell"><span>4 stars</span></td>
+			<td class="lbl" role="cell">Paul McCartney</td>
+			<td class="amt" role="cell"><span>4 stars</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">George Harrison</td>
-			<td class="amount" role="cell"><span>3</span></td>
+			<td class="lbl" role="cell">George Harrison</td>
+			<td class="amt" role="cell"><span>3</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">John Lennon</td>
-			<td class="amount" role="cell"><span>2</span></td>
+			<td class="lbl" role="cell">John Lennon</td>
+			<td class="amt" role="cell"><span>2</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">Ringo Starr</td>
-			<td class="amount" role="cell"><span>1</span></td>
+			<td class="lbl" role="cell">Ringo Starr</td>
+			<td class="amt" role="cell"><span>1</span></td>
 		</tr>
 	</tbody>
 </table>
 
 <style>
-#single-positive-negative .datapoint:nth-child(1) .amount { grid-template-columns: calc(100% * (4 / var(--amount-max))) var(--digit-width); }
-#single-positive-negative .datapoint:nth-child(2) .amount { grid-template-columns: calc(100% * (3 / var(--amount-max))) var(--digit-width); }
-#single-positive-negative .datapoint:nth-child(3) .amount { grid-template-columns: calc(100% * (2 / var(--amount-max))) var(--digit-width); }
-#single-positive-negative .datapoint:nth-child(4) .amount { grid-template-columns: calc(100% * (1 / var(--amount-max))) var(--digit-width); }
-#single-positive-negative .datapoint:nth-child(5) .amount { grid-template-columns: calc(100% * (1 / (var(--amount-min) * -1))) var(--digit-width); }
+#single-posneg-maxintpos .datapoint:nth-child(1) .amt { grid-template-columns: calc(100% * (4 / var(--amt-max))) var(--digit-width); }
+#single-posneg-maxintpos .datapoint:nth-child(2) .amt { grid-template-columns: calc(100% * (3 / var(--amt-max))) var(--digit-width); }
+#single-posneg-maxintpos .datapoint:nth-child(3) .amt { grid-template-columns: calc(100% * (2 / var(--amt-max))) var(--digit-width); }
+#single-posneg-maxintpos .datapoint:nth-child(4) .amt { grid-template-columns: calc(100% * (1 / var(--amt-max))) var(--digit-width); }
+#single-posneg-maxintpos .datapoint:nth-child(5) .amt { grid-template-columns: calc(100% * (1 / (var(--amt-min) * -1))) var(--digit-width); }
 </style>
 
-<table id="single-positive-negative" class="simplebars single negative" role="table" aria-describedby="caption-single-positive-negative">
-	<caption id="caption-single-positive-negative">Single, positive/negative</caption>
+<table id="single-posneg-maxintpos" class="simplebars single posneg maxintpos" role="table" aria-describedby="caption-single-posneg-maxintpos">
+	<caption id="caption-single-posneg-maxintpos">
+		<strong>Single, posneg, maxintpos</strong><br>
+		Single comparison, positive/negative values, largest integer is positive
+	</caption>
 	<thead role="rowgroup">
 		<tr>
 			<th role="columnheader">Beatle</th>
@@ -204,43 +213,46 @@ table.simplebars .datapoint.negative .label {
 	</thead>
 	<tbody role="rowgroup">
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">Paul McCartney</td>
-			<td class="amount" role="cell"><span>4 stars</span></td>
+			<td class="lbl" role="cell">Paul McCartney</td>
+			<td class="amt" role="cell"><span>4 stars</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">George Harrison</td>
-			<td class="amount" role="cell"><span>3</span></td>
+			<td class="lbl" role="cell">George Harrison</td>
+			<td class="amt" role="cell"><span>3</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">John Lennon</td>
-			<td class="amount" role="cell"><span>2</span></td>
+			<td class="lbl" role="cell">John Lennon</td>
+			<td class="amt" role="cell"><span>2</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">Ringo Starr</td>
-			<td class="amount" role="cell"><span>1</span></td>
+			<td class="lbl" role="cell">Ringo Starr</td>
+			<td class="amt" role="cell"><span>1</span></td>
 		</tr>
-		<tr class="datapoint negative" role="row">
-			<td class="label" role="cell">Rob Weychert</td>
-			<td class="amount" role="cell"><span>-1</span></td>
+		<tr class="datapoint neg" role="row">
+			<td class="lbl" role="cell">Rob Weychert</td>
+			<td class="amt" role="cell"><span>-1</span></td>
 		</tr>
 	</tbody>
 </table>
 
 <style>
-#multi-positive .datapoint:nth-child(1) .amount:nth-child(2) { grid-template-columns: calc(100% * (4 / var(--amount-max))) var(--digit-unit-width); }
-#multi-positive .datapoint:nth-child(1) .amount:nth-child(3) { grid-template-columns: calc(100% * (2.5 / var(--amount-max))) var(--digit-unit-width); }
-#multi-positive .datapoint:nth-child(2) .amount:nth-child(2) { grid-template-columns: calc(100% * (3 / var(--amount-max))) var(--digit-unit-width); }
-#multi-positive .datapoint:nth-child(2) .amount:nth-child(3) { grid-template-columns: calc(100% * (1.5 / var(--amount-max))) var(--digit-unit-width); }
-#multi-positive .datapoint:nth-child(3) .amount:nth-child(2) { grid-template-columns: calc(100% * (2 / var(--amount-max))) var(--digit-unit-width); }
-#multi-positive .datapoint:nth-child(3) .amount:nth-child(3) { grid-template-columns: calc(100% * (0.5 / var(--amount-max))) var(--digit-unit-width); }
-#multi-positive .datapoint:nth-child(4) .amount:nth-child(2) { grid-template-columns: calc(100% * (1 / var(--amount-max))) var(--digit-unit-width); }
-#multi-positive .datapoint:nth-child(4) .amount:nth-child(3) { grid-template-columns: calc(100% * (2 / var(--amount-max))) var(--digit-unit-width); }
-#multi-positive .amount:nth-child(2):before { background: hsl(var(--hue),100%,60%); }
-#multi-positive .amount:nth-child(3):before { background: hsl(var(--hue),100%,40%); }
+#single-posneg-maxintneg {
+	--amt-max: 4;
+	--amt-min: -200;
+	--amt-range: calc(var(--amt-max) - var(--amt-min));
+}
+#single-posneg-maxintneg .datapoint:nth-child(1) .amt { grid-template-columns: calc(100% * (4 / var(--amt-max))) var(--digit-width); }
+#single-posneg-maxintneg .datapoint:nth-child(2) .amt { grid-template-columns: calc(100% * (3 / var(--amt-max))) var(--digit-width); }
+#single-posneg-maxintneg .datapoint:nth-child(3) .amt { grid-template-columns: calc(100% * (2 / var(--amt-max))) var(--digit-width); }
+#single-posneg-maxintneg .datapoint:nth-child(4) .amt { grid-template-columns: calc(100% * (1 / var(--amt-max))) var(--digit-width); }
+#single-posneg-maxintneg .datapoint:nth-child(5) .amt { grid-template-columns: calc(100% * (200 / (var(--amt-min) * -1))) var(--digit-width); }
 </style>
 
-<table id="multi-positive" class="simplebars multi" role="table" aria-describedby="caption-multi-positive">
-	<caption id="caption-multi-positive">Multi, positive</caption>
+<table id="single-posneg-maxintneg" class="simplebars single posneg maxintneg" role="table" aria-describedby="caption-single-posneg-maxintneg">
+	<caption id="caption-single-posneg-maxintneg">
+		<strong>Single, posneg, maxintneg</strong><br>
+		Single comparison, positive/negative values, largest integer is negative
+	</caption>
 	<thead role="rowgroup">
 		<tr>
 			<th role="columnheader">Beatle</th>
@@ -249,24 +261,72 @@ table.simplebars .datapoint.negative .label {
 	</thead>
 	<tbody role="rowgroup">
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">Paul McCartney</td>
-			<td class="amount" role="cell"><span>4 stars</span></td>
-			<td class="amount" role="cell"><span>2.5</span></td>
+			<td class="lbl" role="cell">Paul McCartney</td>
+			<td class="amt" role="cell"><span>4 stars</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">George Harrison</td>
-			<td class="amount" role="cell"><span>3</span></td>
-			<td class="amount" role="cell"><span>1.5</span></td>
+			<td class="lbl" role="cell">George Harrison</td>
+			<td class="amt" role="cell"><span>3</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">John Lennon</td>
-			<td class="amount" role="cell"><span>2</span></td>
-			<td class="amount" role="cell"><span>0.5</span></td>
+			<td class="lbl" role="cell">John Lennon</td>
+			<td class="amt" role="cell"><span>2</span></td>
 		</tr>
 		<tr class="datapoint" role="row">
-			<td class="label" role="cell">Ringo Starr</td>
-			<td class="amount" role="cell"><span>1</span></td>
-			<td class="amount" role="cell"><span>2</span></td>
+			<td class="lbl" role="cell">Ringo Starr</td>
+			<td class="amt" role="cell"><span>1</span></td>
+		</tr>
+		<tr class="datapoint neg" role="row">
+			<td class="lbl" role="cell">Rob Weychert</td>
+			<td class="amt" role="cell"><span>-200</span></td>
+		</tr>
+	</tbody>
+</table>
+
+<style>
+#multi-maxintpos .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc(100% * (4 / var(--amt-max))) var(--digit-unit-width); }
+#multi-maxintpos .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc(100% * (2.5 / var(--amt-max))) var(--digit-unit-width); }
+#multi-maxintpos .datapoint:nth-child(2) .amt:nth-child(2) { grid-template-columns: calc(100% * (3 / var(--amt-max))) var(--digit-unit-width); }
+#multi-maxintpos .datapoint:nth-child(2) .amt:nth-child(3) { grid-template-columns: calc(100% * (1.5 / var(--amt-max))) var(--digit-unit-width); }
+#multi-maxintpos .datapoint:nth-child(3) .amt:nth-child(2) { grid-template-columns: calc(100% * (2 / var(--amt-max))) var(--digit-unit-width); }
+#multi-maxintpos .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc(100% * (0.5 / var(--amt-max))) var(--digit-unit-width); }
+#multi-maxintpos .datapoint:nth-child(4) .amt:nth-child(2) { grid-template-columns: calc(100% * (1 / var(--amt-max))) var(--digit-unit-width); }
+#multi-maxintpos .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc(100% * (2 / var(--amt-max))) var(--digit-unit-width); }
+#multi-maxintpos .amt:nth-child(2):before { background: hsl(var(--hue),100%,60%); }
+#multi-maxintpos .amt:nth-child(3):before { background: hsl(var(--hue),100%,40%); }
+</style>
+
+<table id="multi-maxintpos" class="simplebars multi maxintpos" role="table" aria-describedby="caption-multi-maxintpos">
+	<caption id="caption-multi-maxintpos">
+		<strong>Multi, maxintpos</strong><br>
+		Multiple comparisons, largest integer is positive
+	</caption>
+	<thead role="rowgroup">
+		<tr>
+			<th role="columnheader">Beatle</th>
+			<th role="columnheader">Value</th>
+		</tr>
+	</thead>
+	<tbody role="rowgroup">
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell">Paul McCartney</td>
+			<td class="amt" role="cell"><span>4 stars</span></td>
+			<td class="amt" role="cell"><span>2.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell">George Harrison</td>
+			<td class="amt" role="cell"><span>3</span></td>
+			<td class="amt" role="cell"><span>1.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell">John Lennon</td>
+			<td class="amt" role="cell"><span>2</span></td>
+			<td class="amt" role="cell"><span>0.5</span></td>
+		</tr>
+		<tr class="datapoint" role="row">
+			<td class="lbl" role="cell">Ringo Starr</td>
+			<td class="amt" role="cell"><span>1</span></td>
+			<td class="amt" role="cell"><span>2</span></td>
 		</tr>
 	</tbody>
 </table>
