@@ -607,7 +607,6 @@ body > .simplebars {
 	--digit-unit: 8ch; /* length of digit + unit */
 	--unit: " stars";
 }
-#horiz-multi-posneg-unitpos .lbl { grid-row: 1 / span 2; }
 #horiz-multi-posneg-unitpos .amt:nth-child(3) { grid-row: 3; }
 #horiz-multi-posneg-unitpos .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc((4 / var(--amt-max)) * 100%) var(--digit-unit); }
 #horiz-multi-posneg-unitpos .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / var(--amt-max)) * 100%) var(--digit-unit); }
@@ -617,6 +616,7 @@ body > .simplebars {
 #horiz-multi-posneg-unitpos .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc((0.5 / (var(--amt-min) * -1)) * 100%) var(--digit-neg); }
 #horiz-multi-posneg-unitpos .datapoint:nth-child(4) .amt:nth-child(2) { grid-template-columns: calc((1 / (var(--amt-min) * -1)) * 100%) var(--digit-neg); }
 #horiz-multi-posneg-unitpos .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-unit); }
+@media screen and (min-width: 30em) { #horiz-multi-posneg-unitpos .lbl { grid-row: 1 / span 3; } }
 </style>
 
 <table id="horiz-multi-posneg-unitpos" class="simplebars horiz multi posneg unitpos" role="table" aria-describedby="caption-horiz-multi-posneg-unitpos">
@@ -664,7 +664,6 @@ body > .simplebars {
 	--digit-unit: 8ch; /* length of digit + unit */
 	--unit: " stars";
 }
-#horiz-multi-posneg-unitneg .lbl { grid-row: 1 / span 2; }
 #horiz-multi-posneg-unitneg .amt:nth-child(3) { grid-row: 3; }
 #horiz-multi-posneg-unitneg .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc((4 / var(--amt-max)) * 100%) var(--digit-pos); }
 #horiz-multi-posneg-unitneg .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / var(--amt-max)) * 100%) var(--digit-pos); }
@@ -674,6 +673,7 @@ body > .simplebars {
 #horiz-multi-posneg-unitneg .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc((0.5 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
 #horiz-multi-posneg-unitneg .datapoint:nth-child(4) .amt:nth-child(2) { grid-template-columns: calc((1 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
 #horiz-multi-posneg-unitneg .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-pos); }
+@media screen and (min-width: 30em) { #horiz-multi-posneg-unitneg .lbl { grid-row: 1 / span 3; } }
 </style>
 
 <table id="horiz-multi-posneg-unitneg" class="simplebars horiz multi posneg unitneg" role="table" aria-describedby="caption-horiz-multi-posneg-unitneg">
