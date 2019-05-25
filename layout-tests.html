@@ -80,17 +80,25 @@ body > .simplebars {
 
 .simplebars tbody {
 	border-top: var(--border);
+	position: relative;
+}
+.simplebars.allpos tbody,
+.simplebars.allneg tbody {
+	padding-top: calc(0.5em * var(--line-height));
 }
 
 /* datapoint */
 
+.simplebars .datapoint {
+	padding-top: calc(0.5em * var(--line-height));
+	padding-bottom: calc(0.5em * var(--line-height));
+}
 .simplebars.posneg .datapoint {
 	border-bottom: var(--border);
 	display: grid;
 	grid-template-columns: calc(((var(--amt-min) * -1) / var(--amt-range)) * 100%) 2px calc((var(--amt-max) / var(--amt-range)) * 100%);
-	position: relative;
 }
-.simplebars.posneg .datapoint:before {
+.simplebars.posneg tbody:before {
 	background: black;
 	bottom: 0;
 	content: "";
@@ -99,10 +107,10 @@ body > .simplebars {
 	top: 0;
 	width: 2px;
 }
-.simplebars.posneg.unitpos .datapoint:before {
+.simplebars.posneg.unitpos tbody:before {
 	left: calc(var(--digit-neg) + ((100% - (var(--digit-neg) + var(--digit-unit))) * ((var(--amt-min) * -1) / var(--amt-range))));
 }
-.simplebars.posneg.unitneg .datapoint:before {
+.simplebars.posneg.unitneg tbody:before {
 	left: calc(var(--digit-unit) + ((100% - (var(--digit-pos) + var(--digit-unit))) * ((var(--amt-min) * -1) / var(--amt-range))));
 }
 .simplebars.allpos .datapoint,
@@ -123,7 +131,6 @@ body > .simplebars {
 /* label */
 
 .simplebars .lbl {
-	padding-top: calc(0.5em * var(--line-height));
 	padding-bottom: calc(0.25em * var(--line-height));
 }
 .simplebars.allneg .lbl {
@@ -136,7 +143,6 @@ body > .simplebars {
 	background: var(--bg-color);
 	display: inline;
 	position: relative;
-	z-index: 1;
 }
 .simplebars.allpos .lbl,
 .simplebars.posneg.unitpos .lbl {
@@ -158,9 +164,6 @@ body > .simplebars {
 .simplebars .amt {
 	display: grid;
 	grid-template-areas: "bar digit";
-}
-.simplebars .amt:last-child {
-	padding-bottom: calc(0.5em * var(--line-height));
 }
 .simplebars .amt.neg {
 	direction: rtl;
@@ -204,30 +207,51 @@ body > .simplebars {
 	background: hsl(var(--hue),100%,40%);
 }
 
+
 @media screen and (min-width: 30em) {
-	.simplebars.allpos tbody,
-	.simplebars.allneg tbody {
-		padding-top: calc(0.25em * var(--line-height));
+
+	/* data */
+
+	.simplebars.posneg.unitpos tbody:before {
+		left: calc(var(--lbl-width) + var(--digit-neg) + ((100% - (var(--digit-neg) + var(--digit-unit) + var(--lbl-width))) * ((var(--amt-min) * -1) / var(--amt-range))));
 	}
-	.simplebars.allpos .datapoint,
+	.simplebars.posneg.unitneg tbody:before {
+		left: calc(var(--lbl-width) + var(--digit-unit) + ((100% - (var(--digit-pos) + var(--digit-unit) + var(--lbl-width))) * ((var(--amt-min) * -1) / var(--amt-range))));
+	}
+
+	/* datapoint */
+
+	.simplebars.single .datapoint {
+		padding-top: calc(0.25em * var(--line-height));
+		padding-bottom: calc(0.25em * var(--line-height));
+	}
 	.simplebars.allneg .datapoint {
+		direction: rtl;
+	}
+	.simplebars .datapoint {
 		align-items: center;
 		display: grid;
 		grid-template-columns: var(--lbl-width) 1fr;
 	}
-	.simplebars.multi.allpos .datapoint,
-	.simplebars.multi.allneg .datapoint {
-		padding-top: calc(0.5em * var(--line-height));
-		padding-bottom: calc(0.5em * var(--line-height));
+	.simplebars.posneg.unitpos .datapoint {
+		padding-left: calc(var(--lbl-width) + var(--digit-neg));
 	}
-	.simplebars.allneg {
-		direction: rtl;
+	.simplebars.posneg.unitneg .datapoint {
+		padding-left: calc(var(--lbl-width) + var(--digit-unit));
+	}
+	.simplebars.posneg .datapoint {
+		grid-template-columns: 0 calc(((var(--amt-min) * -1) / var(--amt-range)) * 100%) 2px calc((var(--amt-max) / var(--amt-range)) * 100%);
+	}
+
+	/* label */
+
+	.simplebars .lbl {
+		padding-bottom: 0;
 	}
 	.simplebars.allpos .lbl,
 	.simplebars.allneg .lbl {
 		grid-column: 1;
 		margin: 0;
-		padding: calc(0.25em * var(--line-height)) 0;
 	}
 	.simplebars.allpos .lbl {
 		padding-right: 1ch;
@@ -237,20 +261,35 @@ body > .simplebars {
 		padding-left: 1ch;
 		text-align: left;
 	}
-	.simplebars.multi.allpos .lbl,
-	.simplebars.multi.allneg .lbl {
-		grid-row: 1 / span 2;
-		padding-top: 0;
-		padding-bottom: 0;
+	.simplebars.posneg.unitpos .lbl,
+	.simplebars.posneg.unitneg .lbl {
+		grid-column: 1 / span 1;
+		margin-right: 0;
 	}
+	.simplebars.posneg.unitpos .lbl {
+		margin-left: calc((var(--lbl-width) + var(--digit-neg)) * -1);
+		padding-right: calc(var(--digit-neg) + 1ch);
+	}
+	.simplebars.posneg.unitneg .lbl {
+		margin-left: calc((var(--lbl-width) + var(--digit-unit)) * -1);
+		padding-right: calc(var(--digit-unit) + 1ch);
+	}
+
+	/* amount */
+	
 	.simplebars.allpos .amt,
 	.simplebars.allneg .amt {
 		grid-column: 2;
-		padding: calc(0.25em * var(--line-height)) 0;
 	}
 	.simplebars.multi.allpos .amt,
 	.simplebars.multi.allneg .amt {
 		padding: 0;
+	}
+	.simplebars.posneg .amt.pos {
+		grid-column: 4;
+	}
+	.simplebars.posneg .amt.neg {
+		grid-column: 2;
 	}
 }
 
@@ -457,6 +496,7 @@ body > .simplebars {
 	--digit-unit: 8ch; /* length of digit + unit */
 	--unit: " stars";
 }
+#horiz-multi-allpos .lbl { grid-row: 1 / span 2; }
 #horiz-multi-allpos .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc((4 / var(--amt-max)) * 100%) var(--digit-unit); }
 #horiz-multi-allpos .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / var(--amt-max)) * 100%) var(--digit-unit); }
 #horiz-multi-allpos .datapoint:nth-child(2) .amt:nth-child(2) { grid-template-columns: calc((3 / var(--amt-max)) * 100%) var(--digit-unit); }
@@ -511,6 +551,7 @@ body > .simplebars {
 	--digit-unit: 9ch; /* length of digit + unit */
 	--unit: " stars";
 }
+#horiz-multi-allneg .lbl { grid-row: 1 / span 2; }
 #horiz-multi-allneg .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc((4 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
 #horiz-multi-allneg .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
 #horiz-multi-allneg .datapoint:nth-child(2) .amt:nth-child(2) { grid-template-columns: calc((3 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
@@ -566,14 +607,16 @@ body > .simplebars {
 	--digit-unit: 8ch; /* length of digit + unit */
 	--unit: " stars";
 }
+#horiz-multi-posneg-unitpos .lbl { grid-row: 1 / span 2; }
+#horiz-multi-posneg-unitpos .amt:nth-child(3) { grid-row: 3; }
 #horiz-multi-posneg-unitpos .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc((4 / var(--amt-max)) * 100%) var(--digit-unit); }
-#horiz-multi-posneg-unitpos .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / var(--amt-max)) * 100%) var(--digit-unit); grid-row: 3; }
+#horiz-multi-posneg-unitpos .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / var(--amt-max)) * 100%) var(--digit-unit); }
 #horiz-multi-posneg-unitpos .datapoint:nth-child(2) .amt:nth-child(2) { grid-template-columns: calc((3 / var(--amt-max)) * 100%) var(--digit-unit); }
-#horiz-multi-posneg-unitpos .datapoint:nth-child(2) .amt:nth-child(3) { grid-template-columns: calc((1.5 / var(--amt-max)) * 100%) var(--digit-unit); grid-row: 3; }
+#horiz-multi-posneg-unitpos .datapoint:nth-child(2) .amt:nth-child(3) { grid-template-columns: calc((1.5 / var(--amt-max)) * 100%) var(--digit-unit); }
 #horiz-multi-posneg-unitpos .datapoint:nth-child(3) .amt:nth-child(2) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-unit); }
-#horiz-multi-posneg-unitpos .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc((0.5 / (var(--amt-min) * -1)) * 100%) var(--digit-neg); grid-row: 3; }
+#horiz-multi-posneg-unitpos .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc((0.5 / (var(--amt-min) * -1)) * 100%) var(--digit-neg); }
 #horiz-multi-posneg-unitpos .datapoint:nth-child(4) .amt:nth-child(2) { grid-template-columns: calc((1 / (var(--amt-min) * -1)) * 100%) var(--digit-neg); }
-#horiz-multi-posneg-unitpos .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-unit); grid-row: 3; }
+#horiz-multi-posneg-unitpos .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-unit); }
 </style>
 
 <table id="horiz-multi-posneg-unitpos" class="simplebars horiz multi posneg unitpos" role="table" aria-describedby="caption-horiz-multi-posneg-unitpos">
@@ -621,14 +664,16 @@ body > .simplebars {
 	--digit-unit: 8ch; /* length of digit + unit */
 	--unit: " stars";
 }
+#horiz-multi-posneg-unitneg .lbl { grid-row: 1 / span 2; }
+#horiz-multi-posneg-unitneg .amt:nth-child(3) { grid-row: 3; }
 #horiz-multi-posneg-unitneg .datapoint:nth-child(1) .amt:nth-child(2) { grid-template-columns: calc((4 / var(--amt-max)) * 100%) var(--digit-pos); }
-#horiz-multi-posneg-unitneg .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / var(--amt-max)) * 100%) var(--digit-pos); grid-row: 3; }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(1) .amt:nth-child(3) { grid-template-columns: calc((2.5 / var(--amt-max)) * 100%) var(--digit-pos); }
 #horiz-multi-posneg-unitneg .datapoint:nth-child(2) .amt:nth-child(2) { grid-template-columns: calc((3 / var(--amt-max)) * 100%) var(--digit-pos); }
-#horiz-multi-posneg-unitneg .datapoint:nth-child(2) .amt:nth-child(3) { grid-template-columns: calc((1.5 / var(--amt-max)) * 100%) var(--digit-pos); grid-row: 3; }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(2) .amt:nth-child(3) { grid-template-columns: calc((1.5 / var(--amt-max)) * 100%) var(--digit-pos); }
 #horiz-multi-posneg-unitneg .datapoint:nth-child(3) .amt:nth-child(2) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-pos); }
-#horiz-multi-posneg-unitneg .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc((0.5 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); grid-row: 3; }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(3) .amt:nth-child(3) { grid-template-columns: calc((0.5 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
 #horiz-multi-posneg-unitneg .datapoint:nth-child(4) .amt:nth-child(2) { grid-template-columns: calc((1 / (var(--amt-min) * -1)) * 100%) var(--digit-unit); }
-#horiz-multi-posneg-unitneg .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-pos); grid-row: 3; }
+#horiz-multi-posneg-unitneg .datapoint:nth-child(4) .amt:nth-child(3) { grid-template-columns: calc((2 / var(--amt-max)) * 100%) var(--digit-pos); }
 </style>
 
 <table id="horiz-multi-posneg-unitneg" class="simplebars horiz multi posneg unitneg" role="table" aria-describedby="caption-horiz-multi-posneg-unitneg">
