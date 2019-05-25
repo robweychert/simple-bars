@@ -27,6 +27,7 @@ body > .simplebars {
 	--amt-min: -1; /* lowest number */
 	--amt-range: calc(var(--amt-max) - var(--amt-min)); /* number range */
 	--bg-color: hsl(0,0%,93%);
+	--border: 1px dotted currentColor;
 	--breakpoint: 40em;
 	--digit-pos: 2ch; /* length of longest positive digit + 1 (space) */
 	--digit-neg: 3ch; /* length of longest negative digit (incl. negative sign) + 1 (space) */
@@ -75,16 +76,19 @@ body > .simplebars {
 	display: none;
 }
 
+/* data */
+
+.simplebars tbody {
+	border-top: var(--border);
+}
+
 /* datapoint */
 
 .simplebars.posneg .datapoint {
-	border-top: 1px dotted currentColor;
+	border-bottom: var(--border);
 	display: grid;
 	grid-template-columns: calc(((var(--amt-min) * -1) / var(--amt-range)) * 100%) 2px calc((var(--amt-max) / var(--amt-range)) * 100%);
 	position: relative;
-}
-.simplebars.posneg .datapoint:last-child {
-	border-bottom: 1px dotted currentColor;
 }
 .simplebars.posneg .datapoint:before {
 	background: black;
@@ -119,7 +123,7 @@ body > .simplebars {
 /* label */
 
 .simplebars .lbl {
-	padding-top: calc(0.25em * var(--line-height));
+	padding-top: calc(0.5em * var(--line-height));
 	padding-bottom: calc(0.25em * var(--line-height));
 }
 .simplebars.allneg .lbl {
@@ -156,9 +160,7 @@ body > .simplebars {
 	grid-template-areas: "bar digit";
 }
 .simplebars .amt:last-child {
-	padding-bottom: calc(0.25em * var(--line-height));
-}
-.simplebars .amt.pos {
+	padding-bottom: calc(0.5em * var(--line-height));
 }
 .simplebars .amt.neg {
 	direction: rtl;
@@ -200,6 +202,56 @@ body > .simplebars {
 }
 .simplebars.multi .amt:nth-child(3):before {
 	background: hsl(var(--hue),100%,40%);
+}
+
+@media screen and (min-width: 30em) {
+	.simplebars.allpos tbody,
+	.simplebars.allneg tbody {
+		padding-top: calc(0.25em * var(--line-height));
+	}
+	.simplebars.allpos .datapoint,
+	.simplebars.allneg .datapoint {
+		align-items: center;
+		display: grid;
+		grid-template-columns: var(--lbl-width) 1fr;
+	}
+	.simplebars.multi.allpos .datapoint,
+	.simplebars.multi.allneg .datapoint {
+		padding-top: calc(0.5em * var(--line-height));
+		padding-bottom: calc(0.5em * var(--line-height));
+	}
+	.simplebars.allneg {
+		direction: rtl;
+	}
+	.simplebars.allpos .lbl,
+	.simplebars.allneg .lbl {
+		grid-column: 1;
+		margin: 0;
+		padding: calc(0.25em * var(--line-height)) 0;
+	}
+	.simplebars.allpos .lbl {
+		padding-right: 1ch;
+		text-align: right;
+	}
+	.simplebars.allneg .lbl {
+		padding-left: 1ch;
+		text-align: left;
+	}
+	.simplebars.multi.allpos .lbl,
+	.simplebars.multi.allneg .lbl {
+		grid-row: 1 / span 2;
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+	.simplebars.allpos .amt,
+	.simplebars.allneg .amt {
+		grid-column: 2;
+		padding: calc(0.25em * var(--line-height)) 0;
+	}
+	.simplebars.multi.allpos .amt,
+	.simplebars.multi.allneg .amt {
+		padding: 0;
+	}
 }
 
 </style>
