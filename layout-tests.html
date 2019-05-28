@@ -64,9 +64,12 @@ body > .simplebars {
 .simplebars caption {
 	text-align: center;
 }
-.simplebars caption strong {
-	display: inline;
+.simplebars .title {
 	font-weight: bold;
+}
+.simplebars .description {
+	font-size: calc(1em / var(--line-height));
+	margin-top: 0.25em;
 }
 
 /* legend */
@@ -343,8 +346,8 @@ body > .simplebars {
 
 <table id="horiz-single-allpos" class="simplebars horiz single allpos" role="table" aria-describedby="caption-horiz-single-allpos">
 	<caption id="caption-horiz-single-allpos">
-		<strong>horiz single allpos</strong><br>
-		horizontal, single comparison, all positive values
+		<p class="title"><strong>horiz single allpos</strong></p>
+		<p class="description">horizontal, single category, all positive values</p>
 	</caption>
 	<thead role="rowgroup">
 		<tr>
@@ -388,8 +391,8 @@ body > .simplebars {
 
 <table id="horiz-single-allneg" class="simplebars horiz single allneg" role="table" aria-describedby="caption-horiz-single-allneg">
 	<caption id="caption-horiz-single-allneg">
-		<strong>horiz single allneg</strong><br>
-		horizontal, single comparison, all negative values
+		<p class="title"><strong>horiz single allneg</strong></p>
+		<p class="description">horizontal, single category, all negative values</p>
 	</caption>
 	<thead role="rowgroup">
 		<tr>
@@ -435,8 +438,8 @@ body > .simplebars {
 
 <table id="horiz-single-posneg-unitpos" class="simplebars horiz single posneg unitpos" role="table" aria-describedby="caption-horiz-single-posneg-unitpos">
 	<caption id="caption-horiz-single-posneg-unitpos">
-		<strong>horiz single posneg unitpos</strong><br>
-		horizontal, single comparison, positive/negative values, positive gets the unit
+		<p class="title"><strong>horiz single posneg unitpos</strong><p class="title">
+		<p class="description">horizontal, single category, positive/negative values, positive gets the unit</p>
 	</caption>
 	<thead role="rowgroup">
 		<tr>
@@ -486,8 +489,8 @@ body > .simplebars {
 
 <table id="horiz-single-posneg-unitneg" class="simplebars horiz single posneg unitneg" role="table" aria-describedby="caption-horiz-single-posneg-unitneg">
 	<caption id="caption-horiz-single-posneg-unitneg">
-		<strong>horiz single posneg unitneg</strong><br>
-		horizontal, single comparison, positive/negative values, negative gets the unit
+		<p class="title"><strong>horiz single posneg unitneg</strong></p>
+		<p class="description">horizontal, single category, positive/negative values, negative gets the unit</p>
 	</caption>
 	<thead role="rowgroup">
 		<tr>
@@ -540,8 +543,8 @@ body > .simplebars {
 
 <table id="horiz-multi-allpos" class="simplebars horiz multi allpos" role="table" aria-describedby="caption-horiz-multi-allpos">
 	<caption id="caption-horiz-multi-allpos">
-		<strong>horiz multi allpos</strong><br>
-		horizontal, multiple comparisons, all positive values
+		<p class="title"><strong>horiz multi allpos</strong></p>
+		<p class="description">horizontal, multiple categories, all positive values</p>
 	</caption>
 	<thead role="rowgroup">
 		<tr>
@@ -595,8 +598,8 @@ body > .simplebars {
 
 <table id="horiz-multi-allneg" class="simplebars horiz multi allneg" role="table" aria-describedby="caption-horiz-multi-allneg">
 	<caption id="caption-horiz-multi-allneg">
-		<strong>horiz multi allneg</strong><br>
-		horizontal, multiple comparisons, all negative values
+		<p class="title"><strong>horiz multi allneg</strong></p>
+		<p class="description">horizontal, multiple categories, all negative values</p>
 	</caption>
 	<thead role="rowgroup">
 		<tr>
@@ -652,8 +655,8 @@ body > .simplebars {
 
 <table id="horiz-multi-posneg-unitpos" class="simplebars horiz multi posneg unitpos" role="table" aria-describedby="caption-horiz-multi-posneg-unitpos">
 	<caption id="caption-horiz-multi-posneg-unitpos">
-		<strong>horiz multi posneg unitpos</strong><br>
-		horizontal, multiple comparisons, positive/negative values, positive gets the unit
+		<p class="title"><strong>horiz multi posneg unitpos</strong></p>
+		<p class="description">horizontal, multiple categories, positive/negative values, positive gets the unit</p>
 	</caption>
 	<thead role="rowgroup">
 		<tr>
@@ -709,8 +712,8 @@ body > .simplebars {
 
 <table id="horiz-multi-posneg-unitneg" class="simplebars horiz multi posneg unitneg" role="table" aria-describedby="caption-horiz-multi-posneg-unitneg">
 	<caption id="caption-horiz-multi-posneg-unitneg">
-		<strong>horiz multi posneg unitneg</strong><br>
-		horizontal, multiple comparisons, positive/negative values, negative gets the unit
+		<p class="title"><strong>horiz multi posneg unitneg</strong></p>
+		<p class="description">horizontal, multiple categories, positive/negative values, negative gets the unit</p>
 	</caption>
 	<thead role="rowgroup">
 		<tr>
