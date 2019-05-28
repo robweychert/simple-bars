@@ -62,7 +62,6 @@ body > .simplebars {
 /* caption */
 
 .simplebars caption {
-	margin-bottom: calc(1em * var(--line-height));
 	text-align: center;
 }
 .simplebars caption strong {
@@ -75,11 +74,43 @@ body > .simplebars {
 .simplebars thead {
 	display: none;
 }
+.simplebars.multi thead {
+	display: block;
+	margin-top: calc(1em * var(--line-height));
+}
+.simplebars.multi thead tr {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+.simplebars.multi th {
+	align-items: center;
+	display: flex;
+	font-size: calc(1em / var(--line-height));
+	margin: 0 1ch;
+}
+.simplebars.multi th:before {
+	content: "";
+	display: block;
+	height: calc(1em * var(--line-height));
+	margin-right: 1ch;
+	width: 2em;
+}
+.simplebars.multi th:nth-child(1) {
+	display: none;
+}
+.simplebars.multi th:nth-child(2):before {
+	background: hsl(var(--hue),100%,60%);
+}
+.simplebars.multi th:nth-child(3):before {
+	background: hsl(var(--hue),100%,40%);
+}
 
 /* data */
 
 .simplebars tbody {
 	border-top: var(--border);
+	margin-top: calc(1em * var(--line-height));
 	position: relative;
 }
 .simplebars.allpos tbody,
