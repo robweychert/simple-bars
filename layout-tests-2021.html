@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SimpleBars layout tests 2021</title>
+</head>
+
+<body>
+
+<style>
+	.simple-bars,
+	.simple-bars caption,
+	.simple-bars thead,
+	.simple-bars tbody,
+	.simple-bars tr,
+	.simple-bars th,
+	.simple-bars td,
+	.simple-bars p {
+		color: var(--text-color);
+		display: block;
+		font-family: sans-serif;
+		line-height: 1.2;
+		margin: 0;
+		padding: 0;
+	}
+	.simple-bars {
+		background: var(--bg-color);
+		padding: 1em;
+	}
+	.simple-bars .sb-legend,
+	.simple-bars .sb-data {
+		margin-block-start: 1em;
+	}
+	.simple-bars .sb-title {
+		font-weight: bold;
+	}
+	.simple-bars .sb-legend-items {
+		display: flex;
+	}
+	.simple-bars .sb-data {
+		border-block-start: var(--border);
+	}
+	.simple-bars .sb-amt {
+		--bar-area: calc(100%  - ((var(--val-char-pos) + var(--val-char-neg))));
+		align-items: center;
+		color: var(--amt-color);
+		display: flex;
+		font-feature-settings: 'tnum' 1;
+	}
+	.simple-bars .sb-amt:nth-child(odd) {
+		color: blue;
+	}
+	.simple-bars .sb-amt::before {
+		--bar: calc((var(--abs-val) / (var(--abs-max) + var(--abs-min))) * var(--bar-area));
+		background: currentColor;
+		content: '';
+		display: block;
+		flex-shrink: 0;
+		height: 1.2em;
+		min-width: 1px;
+		width: var(--bar);
+	}
+	.simple-bars .sb-pos::before {
+		margin-inline-end: 1ch;
+	}
+	.simple-bars .sb-neg {
+		flex-direction: row-reverse;
+	}
+	.simple-bars .sb-neg::before {
+		margin-inline-start: 1ch;
+	}
+	.simple-bars .sb-amt[style="--abs-val:0"]::before {
+		min-width: 0;
+	}
+
+	/* SB-ALLPOS */
+
+	.simple-bars.sb-allpos .sb-datum {
+		margin-block-start: 0.75em;
+	}
+	.simple-bars.sb-allpos .sb-amt[style="--abs-val:0"]::before {
+		margin: 0;
+	}
+
+	/* SB-ALLNEG */
+
+	.simple-bars.sb-allneg .sb-datum {
+		margin-block-start: 0.75em;
+	}
+	.simple-bars.sb-allneg .sb-lbl {
+		text-align: end;
+	}
+	.simple-bars.sb-allneg .sb-amt[style="--abs-val:0"]::before {
+		margin: 0;
+	}
+
+	/* SB-POSNEG */
+
+	.simple-bars.sb-posneg .sb-data {
+		position: relative;
+	}
+	.simple-bars.sb-posneg .sb-datum {
+		border-block-end: var(--border);
+		padding-block-end: 0.75em;
+		padding-block-start: 0.75em;
+	}
+	.simple-bars.sb-posneg .sb-lbl {
+		background: var(--bg-color);
+		display: inline-block;
+		position: relative;
+		z-index: 1;
+	}
+	.simple-bars.sb-posneg .sb-amt {
+		--neg-width: calc((var(--abs-min) / (var(--abs-max) + var(--abs-min))) * var(--bar-area) + var(--val-char-neg));
+		--pos-width: calc((var(--abs-max) / (var(--abs-max) + var(--abs-min))) * var(--bar-area) + var(--val-char-pos));
+	}
+	.simple-bars.sb-posneg .sb-pos::after {
+		background: var(--text-color);
+		display: block;
+		content: '';
+		height: 100%;
+		margin-inline-start: calc(var(--neg-width) - 1px);
+		position: absolute;
+		top: 0;
+		width: 2px;
+	}
+	.simple-bars.sb-posneg .sb-pos::before {
+		margin-inline-start: var(--neg-width);
+	}
+	.simple-bars.sb-posneg .sb-neg::before {
+		margin-inline-end: var(--pos-width);
+	}
+
+</style>
+
+<table role="table" aria-describedby="caption-the-beatles-ranked" class="simple-bars sb-posneg" id="the-beatles-ranked" style="--amt-color:red;--bg-color:#eee;--text-color:black;--border:1px dotted var(--text-color);--val-char-neg:3ch;--val-char-pos:2ch;--abs-max:4;--abs-min:6">
+	<caption class="sb-caption" id="caption-the-beatles-ranked">
+		<p class="sb-title"><strong>The Beatles, Ranked</strong></p>
+		<p class="sb-desc">For the ranking of the Beatles</p>
+	</caption>
+	<thead role="rowgropup" class="sb-legend">
+		<tr role="row" class="sb-legend-items">
+			<th role="columnheader" class="sb-legend-item">Beatle</th>
+			<th role="columnheader" class="sb-legend-item">2020</th>
+			<th role="columnheader" class="sb-legend-item">2021</th>
+		</tr>
+	</thead>
+	<tbody role="rowgroup" class="sb-data">
+		<tr role="row" class="sb-datum">
+			<td role="cell" class="sb-lbl">Paul McCartney and more</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:4">4</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:3">3</td>
+		</tr>
+		<tr role="row" class="sb-datum">
+			<td role="cell" class="sb-lbl">George Harrison</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:4">4</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:2">2</td>
+		</tr>
+		<tr role="row" class="sb-datum">
+			<td role="cell" class="sb-lbl">John Lennon</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:2">2</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:1">1</td>
+		</tr>
+		<tr role="row" class="sb-datum">
+			<td role="cell" class="sb-lbl">Ringo Starr</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:1">1</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:0">0</td>
+		</tr>
+		<tr role="row" class="sb-datum">
+			<td role="cell" class="sb-lbl">Rob Weychert</td>
+			<td role="cell" class="sb-amt sb-pos" style="--abs-val:3">3</td>
+			<td role="cell" class="sb-amt sb-neg" style="--abs-val:6">-6</td>
+		</tr>
+	</tbody>
+</table>
+
+</body>
