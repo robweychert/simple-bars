@@ -51,6 +51,7 @@ Ringo Starr,1</textarea><br>
 		line-height: 1.2;
 		margin: 0;
 		padding: 0;
+		text-align: start;
 		vertical-align: baseline;
 	}
 	.simplebars {
@@ -70,17 +71,14 @@ Ringo Starr,1</textarea><br>
 	.simplebars .sb-data {
 		border-block-start: var(--border);
 	}
-	.simplebars .sb-amt {
-		--bar-area: calc(100%  - ((var(--val-char-pos) + var(--val-char-neg))));
+	.simplebars .sb-amount {
+		--bar-area: calc(100%  - (var(--max-chars) + var(--min-chars)));
 		align-items: center;
-		color: var(--amt-color);
+		color: var(--amount-color);
 		display: flex;
 		font-feature-settings: 'tnum' 1;
 	}
-	.simplebars .sb-amt:nth-child(odd) {
-		color: blue;
-	}
-	.simplebars .sb-amt::before {
+	.simplebars .sb-amount::before {
 		--bar: calc((var(--abs-val) / (var(--abs-max) + var(--abs-min))) * var(--bar-area));
 		background: currentColor;
 		content: '';
@@ -99,7 +97,7 @@ Ringo Starr,1</textarea><br>
 	.simplebars .sb-neg::before {
 		margin-inline-start: 1ch;
 	}
-	.simplebars .sb-amt[style="--abs-val:0"]::before {
+	.simplebars .sb-amount[style*="--abs-val:0"]::before {
 		min-width: 0;
 	}
 
@@ -108,7 +106,7 @@ Ringo Starr,1</textarea><br>
 	.simplebars.sb-allpos .sb-datum {
 		margin-block-start: 0.75em;
 	}
-	.simplebars.sb-allpos .sb-amt[style="--abs-val:0"]::before {
+	.simplebars.sb-allpos .sb-amount[style*="--abs-val:0"]::before {
 		margin: 0;
 	}
 
@@ -117,10 +115,10 @@ Ringo Starr,1</textarea><br>
 	.simplebars.sb-allneg .sb-datum {
 		margin-block-start: 0.75em;
 	}
-	.simplebars.sb-allneg .sb-lbl {
+	.simplebars.sb-allneg .sb-label {
 		text-align: end;
 	}
-	.simplebars.sb-allneg .sb-amt[style="--abs-val:0"]::before {
+	.simplebars.sb-allneg .sb-amount[style*="--abs-val:0"]::before {
 		margin: 0;
 	}
 
@@ -134,15 +132,15 @@ Ringo Starr,1</textarea><br>
 		padding-block-end: 0.75em;
 		padding-block-start: 0.75em;
 	}
-	.simplebars.sb-posneg .sb-lbl {
+	.simplebars.sb-posneg .sb-label {
 		background: var(--bg-color);
 		display: inline-block;
 		position: relative;
 		z-index: 1;
 	}
-	.simplebars.sb-posneg .sb-amt {
-		--neg-width: calc((var(--abs-min) / (var(--abs-max) + var(--abs-min))) * var(--bar-area) + var(--val-char-neg));
-		--pos-width: calc((var(--abs-max) / (var(--abs-max) + var(--abs-min))) * var(--bar-area) + var(--val-char-pos));
+	.simplebars.sb-posneg .sb-amount {
+		--neg-width: calc((var(--abs-min) / (var(--abs-max) + var(--abs-min))) * var(--bar-area) + var(--min-chars));
+		--pos-width: calc((var(--abs-max) / (var(--abs-max) + var(--abs-min))) * var(--bar-area) + var(--max-chars));
 	}
 	.simplebars.sb-posneg .sb-pos::after {
 		background: var(--text-color);
@@ -163,10 +161,10 @@ Ringo Starr,1</textarea><br>
 
 </style>
 
-<table role="table" aria-describedby="caption-the-beatles-ranked" class="simplebars sb-posneg" id="the-beatles-ranked" style="--amt-color:red;--bg-color:#eee;--text-color:black;--border:1px dotted var(--text-color);--val-char-neg:3ch;--val-char-pos:2ch;--abs-max:4;--abs-min:6">
+<table role="table" aria-describedby="caption-the-beatles-ranked" class="simplebars sb-posneg" id="the-beatles-ranked" style="--amount-color:red;--bg-color:#eee;--text-color:black;--border:1px dotted var(--text-color);--min-chars:4ch;--max-chars:2ch;--abs-max:4;--abs-min:0.1">
 	<caption class="sb-caption" id="caption-the-beatles-ranked">
 		<p class="sb-title"><strong>The Beatles, Ranked</strong></p>
-		<p class="sb-desc">For the ranking of the Beatles</p>
+		<p class="sb-description">For the ranking of the Beatles</p>
 	</caption>
 	<thead role="rowgroup" class="sb-legend">
 		<tr role="row" class="sb-legend-items">
@@ -177,35 +175,32 @@ Ringo Starr,1</textarea><br>
 	</thead>
 	<tbody role="rowgroup" class="sb-data">
 		<tr role="row" class="sb-datum">
-			<td role="cell" class="sb-lbl">Paul McCartney and more</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:4">4</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:3">3</td>
+			<td role="cell" class="sb-label">Paul McCartney and more</td>
+			<td role="cell" class="sb-amount sb-pos" style="--abs-val:4">4</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amount-color:blue;--abs-val:3">3</td>
 		</tr>
 		<tr role="row" class="sb-datum">
-			<td role="cell" class="sb-lbl">George Harrison</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:4">4</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:2">2</td>
+			<td role="cell" class="sb-label">George Harrison</td>
+			<td role="cell" class="sb-amount sb-pos" style="--abs-val:4">4</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amount-color:blue;--abs-val:2">2</td>
 		</tr>
 		<tr role="row" class="sb-datum">
-			<td role="cell" class="sb-lbl">John Lennon</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:2">2</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:1">1</td>
+			<td role="cell" class="sb-label">John Lennon</td>
+			<td role="cell" class="sb-amount sb-pos" style="--abs-val:2">2</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amount-color:blue;--abs-val:1">1</td>
 		</tr>
 		<tr role="row" class="sb-datum">
-			<td role="cell" class="sb-lbl">Ringo Starr</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:1">1</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:0">0</td>
+			<td role="cell" class="sb-label">Ringo Starr</td>
+			<td role="cell" class="sb-amount sb-pos" style="--abs-val:1">1</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amount-color:blue;--abs-val:0">0</td>
 		</tr>
 		<tr role="row" class="sb-datum">
-			<td role="cell" class="sb-lbl">Rob Weychert</td>
-			<td role="cell" class="sb-amt sb-pos" style="--abs-val:3">3</td>
-			<td role="cell" class="sb-amt sb-neg" style="--abs-val:6">-6</td>
+			<td role="cell" class="sb-label">Rob Weychert</td>
+			<td role="cell" class="sb-amount sb-pos" style="--abs-val:3">3</td>
+			<td role="cell" class="sb-amount sb-neg" style="--amount-color:blue;--abs-val:0.1">-0.1</td>
 		</tr>
 	</tbody>
 </table>
-
-<script src="scripts2.js"></script>
-
 
 <script src="scripts2.js"></script>
 
