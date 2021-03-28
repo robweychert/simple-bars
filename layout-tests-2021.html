@@ -10,50 +10,77 @@
 
 <body>
 
+<header>
+	<h1>SimpleBars</h1>
+	<h2>Come with CSV data. Leave with flexible bar charts made from semantic, accessible HTML tables.</h2>
+</header>
+
+<form>
+	<fieldset>
+		<h2>Input</h2>
+		<label for="chart-title">Chart Title</label><br>
+		<input type="text" id="chart-title" size="40" value="The Beatles, ranked"><br>
+		<label for="chart-description">Chart Description</label><br>
+		<textarea id="chart-description" rows="5" cols="40">For the ranking of the Beatles</textarea><br>
+		<label for="chart-csv">CSV Data</label><br>
+		<textarea id="chart-csv" rows="10" cols="40">Beatle,Value
+George Harrison,3
+John Lennon,2
+Paul McCartney,4
+Ringo Starr,1</textarea><br>
+		<button id="generateEmbed">Generate Embed Code</button>
+	</fieldset>
+	<fieldset>
+		<h2>Output</h2>
+		<label for="output">Embed Code</label><br>
+		<textarea id="output" rows="10" cols="40"></textarea><br>
+		<button id="copyEmbed">Copy Embed Code</button>
+	</fieldset>
+</form>
+
+
 <style>
-	.simple-bars,
-	.simple-bars caption,
-	.simple-bars thead,
-	.simple-bars tbody,
-	.simple-bars tr,
-	.simple-bars th,
-	.simple-bars td,
-	.simple-bars p {
+	.simplebars,
+	.simplebars * {
+		border: none;
+		box-sizing: border-box;
 		color: var(--text-color);
 		display: block;
-		font-family: sans-serif;
+		font-family: inherit;
+		font-weight: normal;
 		line-height: 1.2;
 		margin: 0;
 		padding: 0;
+		vertical-align: baseline;
 	}
-	.simple-bars {
+	.simplebars {
 		background: var(--bg-color);
 		padding: 1em;
 	}
-	.simple-bars .sb-legend,
-	.simple-bars .sb-data {
+	.simplebars .sb-legend,
+	.simplebars .sb-data {
 		margin-block-start: 1em;
 	}
-	.simple-bars .sb-title {
+	.simplebars .sb-title strong {
 		font-weight: bold;
 	}
-	.simple-bars .sb-legend-items {
+	.simplebars .sb-legend-items {
 		display: flex;
 	}
-	.simple-bars .sb-data {
+	.simplebars .sb-data {
 		border-block-start: var(--border);
 	}
-	.simple-bars .sb-amt {
+	.simplebars .sb-amt {
 		--bar-area: calc(100%  - ((var(--val-char-pos) + var(--val-char-neg))));
 		align-items: center;
 		color: var(--amt-color);
 		display: flex;
 		font-feature-settings: 'tnum' 1;
 	}
-	.simple-bars .sb-amt:nth-child(odd) {
+	.simplebars .sb-amt:nth-child(odd) {
 		color: blue;
 	}
-	.simple-bars .sb-amt::before {
+	.simplebars .sb-amt::before {
 		--bar: calc((var(--abs-val) / (var(--abs-max) + var(--abs-min))) * var(--bar-area));
 		background: currentColor;
 		content: '';
@@ -63,61 +90,61 @@
 		min-width: 1px;
 		width: var(--bar);
 	}
-	.simple-bars .sb-pos::before {
+	.simplebars .sb-pos::before {
 		margin-inline-end: 1ch;
 	}
-	.simple-bars .sb-neg {
+	.simplebars .sb-neg {
 		flex-direction: row-reverse;
 	}
-	.simple-bars .sb-neg::before {
+	.simplebars .sb-neg::before {
 		margin-inline-start: 1ch;
 	}
-	.simple-bars .sb-amt[style="--abs-val:0"]::before {
+	.simplebars .sb-amt[style="--abs-val:0"]::before {
 		min-width: 0;
 	}
 
 	/* SB-ALLPOS */
 
-	.simple-bars.sb-allpos .sb-datum {
+	.simplebars.sb-allpos .sb-datum {
 		margin-block-start: 0.75em;
 	}
-	.simple-bars.sb-allpos .sb-amt[style="--abs-val:0"]::before {
+	.simplebars.sb-allpos .sb-amt[style="--abs-val:0"]::before {
 		margin: 0;
 	}
 
 	/* SB-ALLNEG */
 
-	.simple-bars.sb-allneg .sb-datum {
+	.simplebars.sb-allneg .sb-datum {
 		margin-block-start: 0.75em;
 	}
-	.simple-bars.sb-allneg .sb-lbl {
+	.simplebars.sb-allneg .sb-lbl {
 		text-align: end;
 	}
-	.simple-bars.sb-allneg .sb-amt[style="--abs-val:0"]::before {
+	.simplebars.sb-allneg .sb-amt[style="--abs-val:0"]::before {
 		margin: 0;
 	}
 
 	/* SB-POSNEG */
 
-	.simple-bars.sb-posneg .sb-data {
+	.simplebars.sb-posneg .sb-data {
 		position: relative;
 	}
-	.simple-bars.sb-posneg .sb-datum {
+	.simplebars.sb-posneg .sb-datum {
 		border-block-end: var(--border);
 		padding-block-end: 0.75em;
 		padding-block-start: 0.75em;
 	}
-	.simple-bars.sb-posneg .sb-lbl {
+	.simplebars.sb-posneg .sb-lbl {
 		background: var(--bg-color);
 		display: inline-block;
 		position: relative;
 		z-index: 1;
 	}
-	.simple-bars.sb-posneg .sb-amt {
+	.simplebars.sb-posneg .sb-amt {
 		--neg-width: calc((var(--abs-min) / (var(--abs-max) + var(--abs-min))) * var(--bar-area) + var(--val-char-neg));
 		--pos-width: calc((var(--abs-max) / (var(--abs-max) + var(--abs-min))) * var(--bar-area) + var(--val-char-pos));
 	}
-	.simple-bars.sb-posneg .sb-pos::after {
+	.simplebars.sb-posneg .sb-pos::after {
 		background: var(--text-color);
 		display: block;
 		content: '';
@@ -127,21 +154,21 @@
 		top: 0;
 		width: 2px;
 	}
-	.simple-bars.sb-posneg .sb-pos::before {
+	.simplebars.sb-posneg .sb-pos::before {
 		margin-inline-start: var(--neg-width);
 	}
-	.simple-bars.sb-posneg .sb-neg::before {
+	.simplebars.sb-posneg .sb-neg::before {
 		margin-inline-end: var(--pos-width);
 	}
 
 </style>
 
-<table role="table" aria-describedby="caption-the-beatles-ranked" class="simple-bars sb-posneg" id="the-beatles-ranked" style="--amt-color:red;--bg-color:#eee;--text-color:black;--border:1px dotted var(--text-color);--val-char-neg:3ch;--val-char-pos:2ch;--abs-max:4;--abs-min:6">
+<table role="table" aria-describedby="caption-the-beatles-ranked" class="simplebars sb-posneg" id="the-beatles-ranked" style="--amt-color:red;--bg-color:#eee;--text-color:black;--border:1px dotted var(--text-color);--val-char-neg:3ch;--val-char-pos:2ch;--abs-max:4;--abs-min:6">
 	<caption class="sb-caption" id="caption-the-beatles-ranked">
 		<p class="sb-title"><strong>The Beatles, Ranked</strong></p>
 		<p class="sb-desc">For the ranking of the Beatles</p>
 	</caption>
-	<thead role="rowgropup" class="sb-legend">
+	<thead role="rowgroup" class="sb-legend">
 		<tr role="row" class="sb-legend-items">
 			<th role="columnheader" class="sb-legend-item">Beatle</th>
 			<th role="columnheader" class="sb-legend-item">2020</th>
@@ -176,5 +203,10 @@
 		</tr>
 	</tbody>
 </table>
+
+<script src="scripts2.js"></script>
+
+
+<script src="scripts2.js"></script>
 
 </body>
