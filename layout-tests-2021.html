@@ -74,13 +74,12 @@ Ringo Starr,1</textarea><br>
 	.simplebars .sb-amount {
 		--bar-area: calc(100%  - (var(--max-chars) + var(--min-chars)));
 		align-items: center;
-		color: var(--amount-color);
 		display: flex;
 		font-feature-settings: 'tnum' 1;
 	}
 	.simplebars .sb-amount::before {
 		--bar: calc((var(--abs-val) / (var(--abs-max) + var(--abs-min))) * var(--bar-area));
-		background: currentColor;
+		background: hsl(var(--amt-h),var(--amt-s),var(--amt-l));
 		content: '';
 		display: block;
 		flex-shrink: 0;
@@ -161,7 +160,7 @@ Ringo Starr,1</textarea><br>
 
 </style>
 
-<table role="table" aria-describedby="caption-the-beatles-ranked" class="simplebars sb-posneg" id="the-beatles-ranked" style="--amount-color:red;--bg-color:#eee;--text-color:black;--border:1px dotted var(--text-color);--min-chars:4ch;--max-chars:2ch;--abs-max:4;--abs-min:0.1">
+<table role="table" aria-describedby="caption-the-beatles-ranked" class="simplebars sb-posneg" id="the-beatles-ranked" style="--amt-h:0;--amt-s:100%;--amt-l:50%;--bg-color:#eee;--text-color:black;--border:1px dotted var(--text-color);--min-chars:4ch;--max-chars:2ch;--abs-max:4;--abs-min:0.1">
 	<caption class="sb-caption" id="caption-the-beatles-ranked">
 		<p class="sb-title"><strong>The Beatles, Ranked</strong></p>
 		<p class="sb-description">For the ranking of the Beatles</p>
@@ -175,29 +174,29 @@ Ringo Starr,1</textarea><br>
 	</thead>
 	<tbody role="rowgroup" class="sb-data">
 		<tr role="row" class="sb-datum">
-			<td role="cell" class="sb-label">Paul McCartney and more</td>
-			<td role="cell" class="sb-amount sb-pos" style="--abs-val:4">4</td>
-			<td role="cell" class="sb-amount sb-pos" style="--amount-color:blue;--abs-val:3">3</td>
+			<td role="cell" class="sb-label">Paul McCartney</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:66%;--abs-val:4">4</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:33%;--abs-val:3">3</td>
 		</tr>
 		<tr role="row" class="sb-datum">
 			<td role="cell" class="sb-label">George Harrison</td>
-			<td role="cell" class="sb-amount sb-pos" style="--abs-val:4">4</td>
-			<td role="cell" class="sb-amount sb-pos" style="--amount-color:blue;--abs-val:2">2</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:66%;--abs-val:4">4</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:33%;--abs-val:2">2</td>
 		</tr>
 		<tr role="row" class="sb-datum">
 			<td role="cell" class="sb-label">John Lennon</td>
-			<td role="cell" class="sb-amount sb-pos" style="--abs-val:2">2</td>
-			<td role="cell" class="sb-amount sb-pos" style="--amount-color:blue;--abs-val:1">1</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:66%;--abs-val:2">2</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:33%;--abs-val:1">1</td>
 		</tr>
 		<tr role="row" class="sb-datum">
 			<td role="cell" class="sb-label">Ringo Starr</td>
-			<td role="cell" class="sb-amount sb-pos" style="--abs-val:1">1</td>
-			<td role="cell" class="sb-amount sb-pos" style="--amount-color:blue;--abs-val:0">0</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:66%;--abs-val:1">1</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:33%;--abs-val:0">0</td>
 		</tr>
 		<tr role="row" class="sb-datum">
 			<td role="cell" class="sb-label">Rob Weychert</td>
-			<td role="cell" class="sb-amount sb-pos" style="--abs-val:3">3</td>
-			<td role="cell" class="sb-amount sb-neg" style="--amount-color:blue;--abs-val:0.1">-0.1</td>
+			<td role="cell" class="sb-amount sb-pos" style="--amt-l:66%;--abs-val:3">3</td>
+			<td role="cell" class="sb-amount sb-neg" style="--amt-l:33%;--abs-val:0.1">-0.1</td>
 		</tr>
 	</tbody>
 </table>
