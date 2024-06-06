@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SimpleBars layout tests 2024</title>
+</head>
+
+<body>
+
+	<style>
+		/*
+		--------------------
+		Global
+		--------------------
+		*/
+		.sb-wrap,
+		.sb-chart,
+		.sb-caption,
+		.sb-title,
+		.sb-desc,
+		.sb-legend,
+		.sb-cats,
+		.sb-cat,
+		.sb-data,
+		.sb-datum,
+		.sb-label,
+		.sb-amount {
+			border: none;
+			display: block;
+			font-style: normal;
+			font-weight: normal;
+			line-height: 1.2;
+			margin: 0;
+			padding: 0;
+			text-align: start;
+		}
+		.sb-wrap {
+			--amtRange: calc(var(--amtMin) + var(--amtMax));
+			--bg: hsl(0deg,0%,95%);
+			--border: 1px dotted currentColor;
+			background: var(--bg);
+			container-name: sb-wrap;
+			container-type: inline-size;
+			font-family: system-ui;
+			margin-block: 1em;
+			padding: 1em 1em 1.5em;
+		}
+		.sb-data {
+			border-block-start: var(--border);
+		}
+		.sb-label,
+		.sb-amount {
+			align-items: center;
+			display: flex;
+		}
+		.sb-amount {
+			--amtSpace: calc(100% - var(--digitWidth) - 1ch);
+			--amtDec: calc(var(--amt) / var(--amtRange));
+			--amtPct: calc(var(--amtDec) * var(--amtSpace));
+			column-gap: 1ch;
+			&::before {
+				background: hsl(40deg,100%,60%);
+				block-size: 1.2em;
+				content: "";
+				flex-shrink: 0;
+				inline-size: var(--amtPct);
+			}
+			&:not(.sb-zero) {
+				min-inline-size: 1px;
+			}
+			&:nth-child(3)::before {
+				background: hsl(40deg,100%,40%);
+			}
+		}
+		.sb-digit {
+			inline-size: var(--digitWidth);
+			white-space: nowrap;
+		}
+
+		/*
+		--------------------
+		All Positive or All Negative
+		--------------------
+		*/
+		.sb-wrap:not(:has(.sb-neg)),
+		.sb-wrap:not(:has(.sb-pos)) {
+			& .sb-datum {
+				padding-block-start: 1.2em;
+			}
+			& .sb-label {
+				padding-block-end: 0.3em;
+			}
+			& .sb-amount.sb-zero {
+				column-gap: unset;
+			}
+		}
+
+		/*
+		--------------------
+		Any Negative
+		--------------------
+		*/
+		.sb-neg {
+			flex-direction: row-reverse;
+			text-align: end;
+		}
+
+		/*
+		--------------------
+		All Negative
+		--------------------
+		*/
+		.sb-wrap:not(:has(.sb-pos)) .sb-label {
+			justify-content: end;
+		}
+
+		/*
+		--------------------
+		Positive/Negative
+		--------------------
+		*/
+		.sb-wrap:has(.sb-neg):has(.sb-pos) {
+			& .sb-data {
+				position: relative;
+				&::after {
+					content: "";
+				}
+			}
+			& .sb-datum {
+				border-bottom: var(--border);
+			}
+			& .sb-label {
+				padding-block-start: 0.6em;
+				position: relative;
+				& span {
+					background: var(--bg);
+					position: relative;
+					z-index: 1;
+				}
+			}
+			& .sb-amount {
+				--amtSpace: calc(100% - (var(--digitWidth) * 2));
+				--amtDecMin: calc(var(--amtMin) / var(--amtRange));
+				--amtDecMax: calc(var(--amtMax) / var(--amtRange));
+				--amtPctMin: calc(((var(--amtDecMin) * var(--amtSpace))) + var(--digitWidth));
+				--amtPctMax: calc(((var(--amtDecMax) * var(--amtSpace))) + var(--digitWidth));
+				position: relative;
+				&:last-child {
+					padding-block-end: 0.6em;
+				}
+			}
+			& .sb-label + .sb-amount {
+				padding-block-start: 0.3em;
+			}
+			& .sb-data::after,
+			& .sb-amount::after {
+				background: currentColor;
+				display: block;
+				inline-size: 0.125em;
+				inset-block: 0;
+				inset-inline-start: calc(((var(--amtMin) / var(--amtRange)) * (100% - (var(--digitWidth) * 2))) + var(--digitWidth) - 0.0625em);
+				position: absolute;
+			}
+			& .sb-neg::before {
+				margin-inline-end: calc(var(--amtPctMax));
+			}
+			& .sb-pos::before {
+				margin-inline-start: calc(var(--amtPctMin));
+			}
+		}
+
+
+		@container sb-wrap (min-width: 30em) {
+			/*
+			--------------------
+			Global
+			--------------------
+			*/
+			.sb-chart {
+				column-gap: 1ch;
+				display: grid;
+				grid-template-columns: fit-content(50%) 1fr;
+			}
+			.sb-caption,
+			.sb-legend {
+				grid-column: 1 / span 2;
+			}
+			.sb-data,
+			.sb-datum {
+				display: grid;
+				grid-column: 1 / span 2;
+				grid-template-columns: subgrid;
+			}
+			.sb-label {
+				grid-row: 1 / span var(--amtNum);
+				justify-content: end;
+			}
+
+			/*
+			--------------------
+			All Positive or All Negative
+			--------------------
+			*/
+			.sb-wrap:not(:has(.sb-neg)),
+			.sb-wrap:not(:has(.sb-pos)) {
+				& .sb-label {
+					padding-block-end: unset;
+				}
+			}
+
+			/*
+			--------------------
+			All Negative
+			--------------------
+			*/
+			.sb-wrap:not(:has(.sb-pos)) {
+				& .sb-chart {
+					grid-template-columns: 1fr fit-content(50%);
+				}
+				& .sb-label {
+					grid-column: 2;
+					justify-content: start;
+				}
+				& .sb-amount {
+					grid-column: 1;
+				}
+			}
+
+			/*
+			--------------------
+			Positive/Negative
+			--------------------
+			*/
+			.sb-wrap:has(.sb-neg):has(.sb-pos) {
+				& .sb-data::after {
+					content: unset;
+				}
+				& .sb-label {
+					padding-block-end: 0.6em;
+					justify-content: start;
+				}
+				& .sb-label + .sb-amount {
+					padding-block-start: 0.6em;
+				}
+				& .sb-amount::after {
+					content: "";
+				}
+			}
+		}
+	</style>
+
+	<div class="sb-wrap" id="sb-the-beatles-ranked" style="--amtMax:4;--amtMin:0;--digitWidth:1ch;--amtNum:1;">
+		<table role="table" aria-described-by="sb-caption-the-beatles-ranked" class="sb-chart">
+			<caption class="sb-caption"  id="sb-caption-the-beatles-ranked">
+				<p class="sb-title">The Beatles, Ranked</p>
+				<p class="sb-desc">All positive, single value.</p>
+			</caption>
+			<thead role="rowgroup" class="sb-legend">
+				<tr role="row" class="sb-cats">
+					<th role="columnheader" class="sb-cat">Beatle</th>
+					<th role="columnheader" class="sb-cat">Talent</th>
+				</tr>
+			</thead>
+			<tbody role="rowgroup" class="sb-data">
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">Paul McCartney</td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:4"><span class="sb-digit">4</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">George Harrison</td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:3"><span class="sb-digit">3</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">John Lennon</td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:2"><span class="sb-digit">2</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">Ringo Starr</td>
+					<td role="cell" class="sb-amount sb-pos sb-zero" style="--amt:0"><span class="sb-digit">0</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="sb-wrap" id="sb-the-beatles-ranked" style="--amtMax:10;--amtMin:0;--digitWidth:2ch;--amtNum:2;">
+		<table role="table" aria-described-by="sb-caption-the-beatles-ranked" class="sb-chart">
+			<caption class="sb-caption"  id="sb-caption-the-beatles-ranked">
+				<p class="sb-title">The Beatles, Ranked</p>
+				<p class="sb-desc">All positive, multiple values.</p>
+			</caption>
+			<thead role="rowgroup" class="sb-legend">
+				<tr role="row" class="sb-cats">
+					<th role="columnheader" class="sb-cat">Beatle</th>
+					<th role="columnheader" class="sb-cat">Talent</th>
+					<th role="columnheader" class="sb-cat">Looks</th>
+				</tr>
+			</thead>
+			<tbody role="rowgroup" class="sb-data">
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">Paul McCartney</td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:10"><span class="sb-digit">10</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:4"><span class="sb-digit">4</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">George Harrison</td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:5"><span class="sb-digit">5</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:2.5"><span class="sb-digit">2.5</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">John Lennon</td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:8"><span class="sb-digit">8</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:2"><span class="sb-digit">2</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">Ringo Starr</td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:3"><span class="sb-digit">3</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:1"><span class="sb-digit">1</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="sb-wrap" id="sb-the-beatles-ranked" style="--amtMax:0;--amtMin:4;--digitWidth:2ch;--amtNum:1;">
+		<table role="table" aria-described-by="sb-caption-the-beatles-ranked" class="sb-chart">
+			<caption class="sb-caption"  id="sb-caption-the-beatles-ranked">
+				<p class="sb-title">The Beatles, Ranked</p>
+				<p class="sb-desc">All negative, single value.</p>
+			</caption>
+			<thead role="rowgroup" class="sb-legend">
+				<tr role="row" class="sb-cats">
+					<th role="columnheader" class="sb-cat">Beatle</th>
+					<th role="columnheader" class="sb-cat">Talent</th>
+				</tr>
+			</thead>
+			<tbody role="rowgroup" class="sb-data">
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">Paul McCartney</td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:4"><span class="sb-digit">-4</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">George Harrison</td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:3"><span class="sb-digit">-3</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">John Lennon</td>
+					<td role="cell" class="sb-amount sb-neg sb-zero" style="--amt:0"><span class="sb-digit">0</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">Ringo Starr</td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:1"><span class="sb-digit">-1</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="sb-wrap" id="sb-the-beatles-ranked" style="--amtMax:0;--amtMin:10;--digitWidth:3ch;--amtNum:2;">
+		<table role="table" aria-described-by="sb-caption-the-beatles-ranked" class="sb-chart">
+			<caption class="sb-caption"  id="sb-caption-the-beatles-ranked">
+				<p class="sb-title">The Beatles, Ranked</p>
+				<p class="sb-desc">All negative, multiple values.</p>
+			</caption>
+			<thead role="rowgroup" class="sb-legend">
+				<tr role="row" class="sb-cats">
+					<th role="columnheader" class="sb-cat">Beatle</th>
+					<th role="columnheader" class="sb-cat">Talent</th>
+					<th role="columnheader" class="sb-cat">Looks</th>
+				</tr>
+			</thead>
+			<tbody role="rowgroup" class="sb-data">
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">Paul McCartney</td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:10"><span class="sb-digit">-10</span></td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:4"><span class="sb-digit">-4</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">George Harrison</td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:5"><span class="sb-digit">-5</span></td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:3"><span class="sb-digit">-3</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">John Lennon</td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:8"><span class="sb-digit">-8</span></td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:2"><span class="sb-digit">-2</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label">Ringo Starr</td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:3"><span class="sb-digit">-3</span></td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:1"><span class="sb-digit">-1</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="sb-wrap" id="sb-the-beatles-ranked" style="--amtMax:4;--amtMin:4;--digitWidth:7ch;--amtNum:1;">
+		<table role="table" aria-described-by="sb-caption-the-beatles-ranked" class="sb-chart">
+			<caption class="sb-caption"  id="sb-caption-the-beatles-ranked">
+				<p class="sb-title">The Beatles, Ranked</p>
+				<p class="sb-desc">Positive and negative, single value.</p>
+			</caption>
+			<thead role="rowgroup" class="sb-legend">
+				<tr role="row" class="sb-cats">
+					<th role="columnheader" class="sb-cat">Beatle</th>
+					<th role="columnheader" class="sb-cat">Talent</th>
+				</tr>
+			</thead>
+			<tbody role="rowgroup" class="sb-data">
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label"><span>Paul McCartney</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:4"><span class="sb-digit">4 stars</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label"><span>George Harrison</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:3"><span class="sb-digit">3</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label"><span>John Lennon</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:2"><span class="sb-digit">2</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label"><span>Ringo Starr</span></td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:4"><span class="sb-digit">-4</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="sb-wrap" id="sb-the-beatles-ranked" style="--amtMax:4;--amtMin:4;--digitWidth:4ch;--amtNum:2;">
+		<table role="table" aria-described-by="sb-caption-the-beatles-ranked" class="sb-chart">
+			<caption class="sb-caption"  id="sb-caption-the-beatles-ranked">
+				<p class="sb-title">The Beatles, Ranked</p>
+				<p class="sb-desc">Positive and negative, multiple values.</p>
+			</caption>
+			<thead role="rowgroup" class="sb-legend">
+				<tr role="row" class="sb-cats">
+					<th role="columnheader" class="sb-cat">Beatle</th>
+					<th role="columnheader" class="sb-cat">Talent</th>
+					<th role="columnheader" class="sb-cat">Looks</th>
+				</tr>
+			</thead>
+			<tbody role="rowgroup" class="sb-data">
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label"><span>Paul McCartney</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:4"><span class="sb-digit">$4 m</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:2"><span class="sb-digit">2</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label"><span>George Harrison</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:3"><span class="sb-digit">3</span></td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:2"><span class="sb-digit">-2</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label"><span>John Lennon</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:1"><span class="sb-digit">1</span></td>
+					<td role="cell" class="sb-amount sb-pos" style="--amt:2"><span class="sb-digit">2</span></td>
+				</tr>
+				<tr role="row" class="sb-datum">
+					<td role="cell" class="sb-label"><span>Ringo Starr</span></td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:2"><span class="sb-digit">-2</span></td>
+					<td role="cell" class="sb-amount sb-neg" style="--amt:4"><span class="sb-digit">-4</span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+</body>
+</html>
